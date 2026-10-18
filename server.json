@@ -1,0 +1,9 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.edtool79-collab/hirepulse-gateway",
+  "title": "HirePulse Agent Gateway",
+  "description": "Hiring signals, tech stack, company jobs, Google Ads and company enrichment. x402 on Base.",
+  "version": "1.0.0",
+  "repository": { "url": "https://github.com/edtool79-collab/hirepulse-mcp", "source": "github" },
+  "remotes": [{ "type": "streamable-http", "url": "https://gethirepulse.xyz/mcp" }]
+}
