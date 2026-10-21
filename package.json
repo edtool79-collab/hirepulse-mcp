@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Stdio MCP proxy for hiring signals, tech stack, company jobs, Google Ads and company research.",
   "type": "module",
+  "scripts": {
+    "build": "node --check proxy.mjs",
+    "test": "node smoke.mjs"
+  },
   "bin": {
     "hirepulse-mcp": "proxy.mjs"
   },
