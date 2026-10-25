@@ -24,8 +24,8 @@ Paste into Claude Desktop's `claude_desktop_config.json`, Cursor's
 On Windows, if the application cannot launch npx, use `"command": "cmd"`
 and `"args": ["/c", "npx", "-y", "hirepulse-mcp"]`.
 
-The proxy forwards the live gateway catalog: 20 metered tools and a free advisor
-(21 canonical MCP tools). The legacy names `00_ask_hirepulse_advisor` and
+The proxy forwards the live gateway catalog: 26 canonical MCP tools in version 12
+(verified 25 October 2026). The legacy names `00_ask_hirepulse_advisor` and
 `verify_domain_legitimacy_and_security` remain callable for compatibility but
 are omitted from `tools/list`. Schemas are forwarded from the gateway rather
 than maintained in a second copy. Every input parameter has a description.
@@ -77,3 +77,11 @@ with `docker run --rm -i hirepulse-mcp`.
 
 In Glama, use build steps `["npm ci --omit=dev --ignore-scripts", "npm run build"]`
 and CMD `["mcp-proxy", "--", "node", "proxy.mjs"]`. No environment variables are required.
+
+## Version 12 discovery
+
+Company profile combines technology, hiring intent/open roles, Google Ads and published contacts, plus `breakout_summary` growth signals, for $0.03 USDC per qualifying result. The direct remote endpoint provides focused profiles: `?profile=b2b` (8 tools) and `?profile=commerce` (11 tools).
+
+`claim_free_trial` / `POST /v1/trial` grants eligible active Base wallets or business emails 25 successful trial calls, valid 30 days. Use the returned private token in the `X-Trial-Token` header or MCP `params._meta["hirepulse/trial_token"]`. Private lookup and paid email inbox allocation are excluded. Free sandbox domains include `example.com`.
+
+[Investor radar n8n workflow](https://gethirepulse.xyz/templates/n8n-investor-radar.json).
