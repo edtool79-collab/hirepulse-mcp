@@ -1,0 +1,187 @@
+{
+  "name": "HirePulse – Stealth Breakout & Investor Radar",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "7b1c2f8e-0001-4c5a-9f10-a1b2c3d4e501",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "domains",
+              "value": "linear.app, stripe.com, vercel.com, ramp.com, notion.so",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b1c2f8e-0002-4c5a-9f10-a1b2c3d4e502",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        300
+      ],
+      "notes": "trial_token: optional. Get 25 free calls with POST https://gethirepulse.xyz/v1/trial {\"email\":\"you@company.com\"} or {\"wallet\":\"0x...\"}. Demo domains (example.com, linear.app, stripe.com, shopify.com, vercel.com) are always free. With a trial_token, each other domain uses a trial call; without one, it uses one of the 5 free daily calls."
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = String($input.first().json.domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
+      },
+      "id": "7b1c2f8e-0003-4c5a-9f10-a1b2c3d4e503",
+      "name": "One item per domain",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/company-profile",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n investor radar: breakout screening"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1500
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "7b1c2f8e-0004-4c5a-9f10-a1b2c3d4e504",
+      "name": "HirePulse company profile",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = [];\nfor (const item of $input.all()) {\n  const r = item.json || {};\n  const b = r.breakout_summary || {};\n  if (r.status === 'ok' && (b.signal === 'strong' || b.signal === 'moderate')) {\n    const h = r.hiring_intent || {};\n    const g = r.google_ads || {};\n    const c = r.contacts || {};\n    rows.push({ json: {\n      domain: r.domain,\n      signal: b.signal,\n      score: b.score,\n      reasons: (b.reasons || []).join(' | '),\n      hiring_status: h.hiring_status || null,\n      open_roles: h.total_open_roles ?? null,\n      roles_last_30_days: h.roles_posted_last_30_days ?? null,\n      google_ads_in_sample: g.ads_returned ?? null,\n      emails: (c.emails || []).join(', '),\n      social_links: (c.social_links || []).join(', '),\n      note: 'Estimate from public signals; not investment advice.'\n    } });\n  }\n}\nreturn rows;"
+      },
+      "id": "7b1c2f8e-0005-4c5a-9f10-a1b2c3d4e505",
+      "name": "Investor alert (strong or moderate)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = [];\nfor (const item of $input.all()) {\n  const r = item.json || {};\n  if (r.code === 'payment_required' || r.status === 402) {\n    rows.push({ json: { domain: r.domain || null, action: 'Free calls are used. Add a trial_token in Settings (POST https://gethirepulse.xyz/v1/trial), pay per call with an x402 client, or use the Apify Actor by card: ' + ((r.fiat_fallback && r.fiat_fallback.card_billing_url) || 'https://apify.com/hirepulse') } });\n  } else if (r.status === 'insufficient_data') {\n    rows.push({ json: { domain: r.domain, action: 'Not enough public data for a profile (not charged).' } });\n  }\n}\nreturn rows;"
+      },
+      "id": "7b1c2f8e-0006-4c5a-9f10-a1b2c3d4e506",
+      "name": "Needs attention",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "One item per domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "One item per domain": {
+      "main": [
+        [
+          {
+            "node": "HirePulse company profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HirePulse company profile": {
+      "main": [
+        [
+          {
+            "node": "Investor alert (strong or moderate)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Needs attention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
