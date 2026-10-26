@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.edtool79-collab/hirepulse-commerce",
+  "description": "11 tools for product data, store discovery and merchant evidence. Free sandbox and x402 payments.",
+  "title": "HirePulse Commerce Research",
+  "repository": {
+    "url": "https://github.com/edtool79-collab/hirepulse-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gethirepulse.xyz/mcp?profile=commerce&ref=registry-commerce"
+    }
+  ],
+  "websiteUrl": "https://gethirepulse.xyz/?ref=registry-commerce#start-commerce"
+}
