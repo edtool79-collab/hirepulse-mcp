@@ -1,9 +1,18 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.edtool79-collab/hirepulse-gateway",
+  "description": "26 tools: 4-in-1 company profiles, growth signals, commerce; free sandbox and 25-call trials. x402.",
   "title": "HirePulse Agent Gateway",
-  "description": "Hiring signals, tech stack, company jobs, Google Ads and company enrichment. x402 on Base.",
-  "version": "1.0.0",
-  "repository": { "url": "https://github.com/edtool79-collab/hirepulse-mcp", "source": "github" },
-  "remotes": [{ "type": "streamable-http", "url": "https://gethirepulse.xyz/mcp" }]
+  "repository": {
+    "url": "https://github.com/edtool79-collab/hirepulse-mcp",
+    "source": "github"
+  },
+  "version": "1.1.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gethirepulse.xyz/mcp"
+    }
+  ],
+  "websiteUrl": "https://gethirepulse.xyz"
 }
