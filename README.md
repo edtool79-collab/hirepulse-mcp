@@ -35,7 +35,22 @@ Clients requiring stdio can bridge the remote endpoint:
 }
 ```
 
-The `hirepulse-mcp` npm package is not yet published; do not use `npx hirepulse-mcp` until publication is confirmed. The source proxy can still be built and tested locally with Node.js 20+, `npm ci`, `npm run build`, and `npm test`.
+## npm: local stdio proxy
+
+[`hirepulse-mcp@1.0.0`](https://www.npmjs.com/package/hirepulse-mcp) is published and verified against all 26 live tools, including `claim_free_trial`. Requires Node.js 20+.
+
+```json
+{
+  "mcpServers": {
+    "hirepulse": {
+      "command": "npx",
+      "args": ["-y", "hirepulse-mcp@1.0.0"]
+    }
+  }
+}
+```
+
+The npm proxy exposes the full 26-tool gateway. For a focused 8-tool or 11-tool setup, use the remote profiles above. Source development: `npm ci`, `npm run build`, `npm test`.
 
 ## Try a company profile without a wallet
 
