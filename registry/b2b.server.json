@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.edtool79-collab/hirepulse-b2b",
+  "description": "8 focused tools: company profiles, tech, hiring, ads and contacts. Free sandbox and 25-call trials.",
+  "title": "HirePulse B2B Company Research",
+  "repository": {
+    "url": "https://github.com/edtool79-collab/hirepulse-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gethirepulse.xyz/mcp?profile=b2b&ref=registry-b2b"
+    }
+  ],
+  "websiteUrl": "https://gethirepulse.xyz/?ref=registry-b2b#start-b2b"
+}
