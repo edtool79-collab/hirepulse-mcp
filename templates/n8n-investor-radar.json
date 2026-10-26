@@ -2,6 +2,70 @@
   "name": "HirePulse – Stealth Breakout & Investor Radar",
   "nodes": [
     {
+      "parameters": {
+        "content": "## 🚀 Stealth Breakout & Investor Radar\nTracks live operational growth signals before funding rounds are announced:\n1. **ATS Hiring Spikes**: Greenhouse, Lever, Ashby, Workable open jobs.\n2. **Active Google Ads Spend**: Running campaigns from Google Ads Transparency Center.\n3. **Tech Stack & Contacts**: Pixel tracking & public company contacts.\n4. **Breakout Scoring**: 0–100 signal score for instant VC/B2B alerts.",
+        "height": 200,
+        "width": 1140,
+        "color": 6
+      },
+      "id": "sticky-header-overview",
+      "name": "Workflow Overview Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Shortlist Input\nEnter target domains in Settings.\nFree sandbox domains: linear.app, stripe.com, vercel.com.",
+        "height": 120,
+        "width": 380,
+        "color": 4
+      },
+      "id": "sticky-stage-1",
+      "name": "Stage 1 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        270
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 2. Operational Intelligence\nCross-checks hiring velocity, live Google Ads, and tech stack in parallel via HirePulse profile API.",
+        "height": 120,
+        "width": 380,
+        "color": 5
+      },
+      "id": "sticky-stage-2",
+      "name": "Stage 2 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        440,
+        270
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 3. Investor Alerts & Routing\nFilters breakouts (score >= 60) for actionable alerts, and flags quota/edge cases.",
+        "height": 120,
+        "width": 260,
+        "color": 7
+      },
+      "id": "sticky-stage-3",
+      "name": "Stage 3 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        70
+      ]
+    },
+    {
       "parameters": {},
       "id": "7b1c2f8e-0001-4c5a-9f10-a1b2c3d4e501",
       "name": "Start",
@@ -9,7 +73,7 @@
       "typeVersion": 1,
       "position": [
         0,
-        300
+        420
       ]
     },
     {
@@ -38,7 +102,7 @@
       "typeVersion": 3.4,
       "position": [
         220,
-        300
+        420
       ],
       "notes": "trial_token: optional. Get 25 free calls with POST https://gethirepulse.xyz/v1/trial {\"email\":\"you@company.com\"} or {\"wallet\":\"0x...\"}. Demo domains (example.com, linear.app, stripe.com, shopify.com, vercel.com) are always free. With a trial_token, each other domain uses a trial call; without one, it uses one of the 5 free daily calls."
     },
@@ -52,7 +116,7 @@
       "typeVersion": 2,
       "position": [
         440,
-        300
+        420
       ]
     },
     {
@@ -95,7 +159,7 @@
       "typeVersion": 4.2,
       "position": [
         660,
-        300
+        420
       ]
     },
     {
@@ -108,7 +172,7 @@
       "typeVersion": 2,
       "position": [
         900,
-        200
+        220
       ]
     },
     {
@@ -121,7 +185,7 @@
       "typeVersion": 2,
       "position": [
         900,
-        420
+        500
       ]
     }
   ],
