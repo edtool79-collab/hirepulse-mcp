@@ -28,7 +28,17 @@ try {
     },
   });
   if (caps.tools) {
-    server.setRequestHandler(ListToolsRequestSchema, r => remote.listTools(r.params));
+    server.setRequestHandler(ListToolsRequestSchema, async r => {
+      const res = await remote.listTools(r.params);
+      for (const tool of res.tools ?? []) {
+        for (const [name, schema] of Object.entries(tool.inputSchema?.properties ?? {})) {
+          if (typeof schema.description !== 'string' || !schema.description.trim()) {
+            schema.description = `${name} parameter for ${tool.name}`;
+          }
+        }
+      }
+      return res;
+    });
     server.setRequestHandler(CallToolRequestSchema, r => remote.callTool(r.params));
   }
   if (caps.resources) {

@@ -25,7 +25,7 @@ On Windows, if the application cannot launch npx, use `"command": "cmd"`
 and `"args": ["/c", "npx", "-y", "hirepulse-mcp"]`.
 
 The proxy forwards the live gateway catalog: 20 metered tools and a free advisor
-(21 canonical MCP tools). The legacy names `00_ask_hirepulse_advisor` and
+(26 canonical MCP tools). The legacy names `00_ask_hirepulse_advisor` and
 `verify_domain_legitimacy_and_security` remain callable for compatibility but
 are omitted from `tools/list`. Schemas are forwarded from the gateway rather
 than maintained in a second copy. Every input parameter has a description.
