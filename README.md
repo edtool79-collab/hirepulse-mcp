@@ -1,24 +1,63 @@
-# hirepulse-mcp
+# HirePulse company research MCP
 
-An stdio MCP server that proxies the remote HirePulse MCP gateway (`https://gethirepulse.xyz/mcp`).
+Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts.
 
-## Usage
+## Start with remote MCP: 8 focused B2B tools
+
+No npm package is needed for clients that support remote HTTP MCP:
+
+```json
+{
+  "mcpServers": {
+    "hirepulse": {
+      "url": "https://gethirepulse.xyz/mcp?profile=b2b&ref=github"
+    }
+  }
+}
+```
+
+Claude Code:
+
+```sh
+claude mcp add --transport http hirepulse 'https://gethirepulse.xyz/mcp?profile=b2b&ref=github'
+```
+
+Clients requiring stdio can bridge the remote endpoint:
 
 ```json
 {
   "mcpServers": {
     "hirepulse": {
       "command": "npx",
-      "args": ["-y", "hirepulse-mcp"]
+      "args": ["-y", "mcp-remote", "https://gethirepulse.xyz/mcp?profile=b2b&ref=github"]
     }
   }
 }
 ```
 
-Paste into Claude Desktop's `claude_desktop_config.json` or your MCP client configuration.
+The `hirepulse-mcp` npm package is not yet published; do not use `npx hirepulse-mcp` until publication is confirmed. The source proxy can still be built and tested locally with Node.js 20+, `npm ci`, `npm run build`, and `npm test`.
 
-On Windows, if the application cannot launch npx, use `"command": "cmd"`
-and `"args": ["/c", "npx", "-y", "hirepulse-mcp"]`.
+## Try a company profile without a wallet
+
+```sh
+curl -X POST 'https://gethirepulse.xyz/v1/company-profile?ref=github' \
+  -H 'Content-Type: application/json' \
+  -d '{"domain":"example.com"}'
+```
+
+`example.com` returns explicitly labeled synthetic sandbox data, not a live company result, and does not consume the shared free allowance.
+
+For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligible business email or active Base wallet a one-time 25-call pass valid for 30 days. No email is sent. Keep the returned token private; send it using `X-Trial-Token` or MCP `params._meta["hirepulse/trial_token"]`. Private lookup and paid inbox allocation are excluded.
+
+[Guided setup and demo](https://gethirepulse.xyz/?ref=github#start-b2b) · [Investor radar n8n workflow](https://gethirepulse.xyz/templates/n8n-investor-radar.json) · [API catalog](https://gethirepulse.xyz/v1/catalog)
+
+## Commerce and the complete catalog
+
+- Commerce research: `https://gethirepulse.xyz/mcp?profile=commerce&ref=github` (11 tools).
+- Complete v12 catalog: `https://gethirepulse.xyz/mcp?ref=github` (26 tools; existing clients remain supported).
+- Versioned machine-readable configurations: [B2B](mcp-b2b.json), [Commerce](mcp-commerce.json), and [complete catalog](mcp.json).
+
+## Proxy behavior and pricing
 
 The proxy forwards the live gateway catalog: 26 canonical MCP tools in version 12
 (verified 26 October 2026). The legacy names `00_ask_hirepulse_advisor` and
