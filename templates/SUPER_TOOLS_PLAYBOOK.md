@@ -1,33 +1,22 @@
-# HirePulse Turnkey Super-Tools Playbook (n8n + MCP + HTTP Recipes)
+# HirePulse Super-Tools Playbook
 
-Instead of calling individual endpoints in isolation, these **4 open-source Super-Tool pipelines** chain HirePulse's 26 canonical MCP tools (`https://gethirepulse.xyz/mcp` and `/v1/...` HTTP routes) into high-ROI workflows.
+Turnkey workflows for company and commerce research across n8n and Make.com. The Gateway hosts these files under `/templates/`.
 
-- **Free Sandbox Domains (Unlimited $0.00 testing):** `linear.app`, `stripe.com`, `shopify.com`, `example.com`
-- **Free Daily Quota:** 5 successful data calls per UTC day per IP (shared across tools).
-- **Zero-Waste Guarantee:** Empty results (`not_found` / `no_data`) are never charged.
-- **Pay-Per-Result (after free tier):** x402 USDC on Base (`eip155:8453`).
+## Before running
+- Review Settings. Defaults use free allowlisted domains: `example.com`, `linear.app`, `stripe.com`, `shopify.com`, `vercel.com`. `example.com` is a labeled synthetic demo; other allowlisted samples may be cached. Do not infer real-company coverage from a synthetic result.
+- A trial grants 25 successful calls shared across supported single-domain data tools for 30 days. It excludes private lookup, quote redemption and paid email allocation.
+- HTTP 400/402/429/5xx stop the workflow. No workflow signs a wallet payment, creates a payment client, sends outreach or checks out. A supplied inbox payment authorization is used only after explicitly enabling the inbox step.
+- Private lookup and inbox allocation are OFF by default. Trial is not a payment credential. Configure x402 separately to continue after a 402; do not blindly retry.
+- Templates disable saving successful/failed/manual execution data by default. Never publish trial tokens, inbox access_token/capability, or payment authorizations. Verify your n8n or Make instance retention settings before handling credentials.
+- Inputs must be real caller-provided domains. All comparator targets must be allowlisted for a free Sandbox response; adding any real competitor uses normal quota/payment.
 
 ---
 
-## 1. The $0.035 Clay Killer — Zero-Waste Outbound Sniper
+## 1. Zero-Waste Outbound Sniper ($0.035 Intent Pre-Filter)
 - **n8n Template:** [`n8n-zero-waste-outbound-sniper.json`](./n8n-zero-waste-outbound-sniper.json)
 - **Make.com Blueprint:** [`make-zero-waste-outbound-sniper.json`](./make-zero-waste-outbound-sniper.json)
 
-### Why it exists
-Traditional outbound waterfalls burn enrichment credits on 80%+ of domains that have frozen hiring and zero active ad spend. This pipeline checks deterministic operational velocity first and enriches contacts **only** when a company is actively expanding.
-
-### Execution Chain & Cost Breakdown
-1. **Free Batch / Quote Scan (Optional for 2–50 domains):** `POST /v1/batch` (`batch_lookup`) or `POST /v1/hot-buyers` (`find_hot_buyers`) — Step 1 scan is free (3 scans/day/IP).
-2. **Hiring Velocity Gate ($0.01):** `POST /v1/company-intent` (`get_company_hiring_intent`) — Checks live Greenhouse, Lever, Ashby, Workable, Recruitee, and SmartRecruiters boards. ($0 if no board found).
-3. **Ad Spend Gate ($0.01):** `POST /v1/google-ads` (`get_google_ads_by_domain`) — Verifies active Google Ads Transparency Center campaigns. ($0 if no ads found).
-4. **Tech Stack + Contact Sniper ($0.005 + $0.01):** Runs `POST /v1/tech-stack` (`detect_website_tech_stack`) and `POST /v1/extract-contacts` (`extract_company_contacts`) **only** on companies that pass the gate.
-
-### Try it free right now (Sandbox)
-```bash
-curl -s -X POST https://gethirepulse.xyz/v1/company-profile \
-  -H "Content-Type: application/json" \
-  -d '{"domain":"linear.app"}'
-```
+Hiring intent ($0.01) and Google Ads ($0.01) screen EACH candidate. Only selected companies continue to technology ($0.005) and public contacts ($0.01). All four successful calls for one selected company cost $0.035 before free quota; rejected companies incur $0.02 screening cost. A $0.03 company-profile is an alternative when all four sections are needed. Batch/Hot Buyers are separate optional quote flows: scans are free but paid results require redemption, with 3 scans/IP/UTC day. Hot Buyers requires 2–25 domains and charges $0.25/hot company on redemption.
 
 ---
 
@@ -35,58 +24,22 @@ curl -s -X POST https://gethirepulse.xyz/v1/company-profile \
 - **n8n Template:** [`n8n-shopify-ucp-acp-agency-kit.json`](./n8n-shopify-ucp-acp-agency-kit.json)
 - **Make.com Blueprint:** [`make-shopify-ucp-acp-agency-kit.json`](./make-shopify-ucp-acp-agency-kit.json)
 
-### Why it exists
-With Google/Shopify's **Universal Commerce Protocol (UCP)** and OpenAI/Stripe's **Agentic Commerce Protocol (ACP)**, AI shopping agents require `/.well-known/ucp`, `/.well-known/acp/config.json`, complete JSON-LD product offer schemas, and open `robots.txt` policies. Over 75% of stores fail these checks while actively paying for Google Ads.
-
-### Execution Chain & Cost Breakdown
-1. **UCP/ACP Store Readiness Audit ($0.01):** `POST /v1/store-readiness` (`muse_agentic_store_readiness_auditor`) — Scores the store (0–100) across UCP/ACP discovery files, JSON-LD product schema, bot access, and payment hints.
-2. **Conversion Leak Lead Qualifier ($0.05):** `POST /v1/conversion-leads` (`muse_conversion_leak_lead_finder`) — Combines readiness gaps with verified Google Ads spend and public store contacts.
-3. **Competitor Shelf Schema Comparator ($0.02):** `POST /v1/schema-comparator` (`agentic_shelf_schema_comparator`) — Compares structured product schema completeness against up to 3 competitors.
-
-### Try it free right now (Sandbox)
-```bash
-curl -s -X POST https://gethirepulse.xyz/v1/store-readiness \
-  -H "Content-Type: application/json" \
-  -d '{"domain":"shopify.com"}'
-```
+Store readiness ($0.01) -> conversion-lead evidence ($0.05) -> competitor comparison ($0.02). All stages are connected. Set 1–3 competitor domains. UCP=Universal Commerce Protocol; ACP=Agentic Commerce Protocol. Findings are heuristic, not certification, proof of ad spend amounts or measured lost revenue.
 
 ---
 
 ## 3. Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod
-**Template:** [`n8n-agent-safe-spend-and-otp-pod.json`](./n8n-agent-safe-spend-and-otp-pod.json)
+- **n8n Template:** [`n8n-agent-safe-spend-and-otp-pod.json`](./n8n-agent-safe-spend-and-otp-pod.json)
 
-### Why it exists
-Autonomous AI agents with x402 wallets or shopping tools face indirect prompt injection, unverified 402 endpoints, and signup OTP walls. This firewall screens endpoints before payment and provides sanitized Markdown + ephemeral inbound test inboxes.
-
-### Execution Chain & Cost Breakdown
-1. **x402 Endpoint Pre-Payment Check ($0.002):** `POST /v1/verify-merchant` (`x402_merchant_trust_check`) — Checks TLS, x402 discovery files, Coinbase CDP Bazaar reputation, price anomalies, and prompt-injection flags.
-2. **Online Merchant Trust & Signed Badge ($0.005):** `POST /v1/merchant-badge` (`verified_merchant_json_badge`) or `POST /v1/merchant-trust` (`pre_purchase_merchant_trust_check`).
-3. **Sanitized Web-to-Markdown ($0.002):** `POST /v1/clean-markdown` (`url_to_clean_markdown`) — Strips scripts, ads, and hidden DOM elements.
-4. **Authorized Ephemeral OTP Inbox ($0.01 / 10 min):** `POST /v1/email/inboxes` (`create_email_inbox`) + `get_email_code` — Creates a short-lived inbound inbox for authorized automated signup testing.
-
-### Try it free right now (Sandbox)
-```bash
-curl -s -X POST https://gethirepulse.xyz/v1/verify-merchant \
-  -H "Content-Type: application/json" \
-  -d '{"target_url":"https://example.com"}'
-```
+x402 endpoint evidence ($0.002) -> merchant badge ($0.005) -> Markdown ($0.002). The policy report never authorizes payment. Optional inbox allocation ($0.01 per started 600 seconds) -> one OTP candidate read is connected behind an explicit enable_inbox setting. Reuse an idempotency_key for allocation retries. Supply your own fresh x402 authorization only when intentionally allocating the inbox. A pending/ambiguous code is not a usable OTP. No polling loop or third-party submission runs. Use your allocation credentials to inspect/delete the inbox if needed; otherwise it expires. Heuristics and Markdown do not guarantee safety or remove every injection.
 
 ---
 
 ## 4. Stealth VC Due Diligence & Instant Vendor Risk X-Ray
-**Template:** [`n8n-stealth-vc-and-vendor-xray.json`](./n8n-stealth-vc-and-vendor-xray.json)
+- **n8n Template:** [`n8n-stealth-vc-and-vendor-xray.json`](./n8n-stealth-vc-and-vendor-xray.json)
 
-### Why it exists
-Procurement teams and VC analysts need fast, deterministic operating evidence on vendors and targets without paying $20,000/yr for enterprise TPRM suites or leaking target domains in public x402 facilitator metadata.
+Optional private tech lookup ($0.02) -> footprint ($0.03) -> vendor health ($0.10) -> jobs ($0.01). Direct stages total $0.14 with data; optional single private lookup adds $0.02. The private endpoint also offers $0.04 bundles through its documented tier selector, but this template's optional step is the single tech lookup. All direct calls remain direct: enabling one private lookup does not hide later calls. Public signals are not financial forecasts, credit ratings or proof of solvency. Avoid buying redundant checks.
 
-### Execution Chain & Cost Breakdown
-1. **Blind Proxy Query ($0.02 single / $0.04 bundle):** `POST /v1/private-query` (`private_blind_lookup`) — Strips the target domain from x402 facilitator metadata.
-2. **Operating Footprint Verification ($0.03):** `POST /v1/company-footprint` (`company_footprint_check`) — Checks active analytics/ad pixels, live job boards, and Google Ads records.
-3. **B2B Vendor Stability Evaluator ($0.10):** `POST /v1/vendor-health` (`b2b_vendor_stability_evaluator`) — Evaluates procurement risk from public technology, DNS/DMARC posture, and hiring evidence.
+---
 
-### Try it free right now (Sandbox)
-```bash
-curl -s -X POST https://gethirepulse.xyz/v1/company-footprint \
-  -H "Content-Type: application/json" \
-  -d '{"domain":"stripe.com"}'
-```
+Prices are list prices per useful result before free quota; actual payment requirements are authoritative. These templates were checked structurally and with offline node fixtures.

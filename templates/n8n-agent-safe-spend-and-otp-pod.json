@@ -1,117 +1,95 @@
 {
-  "name": "HirePulse Super-Tool #3 – Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod",
+  "name": "HirePulse Agent Safe-Spend Firewall and OTP Pod",
+  "active": false,
   "nodes": [
     {
-      "parameters": {
-        "content": "## 🛡️ Super-Tool #3: Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod\nProtects autonomous AI agents and x402 wallets from **Indirect Prompt Injection**, fake 402 payment traps, and unverified merchants:\n1. **x402 API Endpoint Firewall (`/v1/verify-merchant`, $0.002)**: Screens target URLs for valid TLS, x402 discovery files, Coinbase CDP Bazaar reputation, price gouging, and prompt-injection flags before your agent signs a payment.\n2. **Online Store Trust Check (`/v1/merchant-trust`, $0.005)**: Screens e-commerce domains for operational footprint before agentic checkout.\n3. **Sanitized Markdown Reader (`/v1/clean-markdown`, $0.002)** & **Ephemeral OTP Inbox (`/v1/email/inboxes`, $0.01/10m)**: Strips malicious scripts/ads and provides disposable inbound OTP verification for authorized testing.",
-        "height": 210,
-        "width": 1220,
-        "color": 6
-      },
-      "id": "sticky-header-firewall",
-      "name": "Workflow Overview Note",
+      "id": "02e3cdeb-9df4-545e-a6c6-cca76993b791",
+      "name": "Read Me",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        20
-      ]
-    },
-    {
+        300
+      ],
       "parameters": {
-        "content": "### 1. Target Endpoint & Merchant\nSet `target_url` and `merchant_domain` in Settings.\nFree sandbox: `https://example.com` and `example.com`.",
-        "height": 120,
-        "width": 360,
-        "color": 4
-      },
-      "id": "sticky-stage-1-firewall",
-      "name": "Stage 1 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        260
-      ]
+        "content": "Implemented endpoint evidence, merchant badge and Markdown. Heuristics cannot guarantee safety or remove all prompt injection. Optional inbox is disabled by default; it needs explicit x402 authorization and costs$0.01/started600seconds. Trial/Sandbox do not cover inbox allocation. A policy label is not wallet authorization. No email is sent to third parties.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
+        "height": 300,
+        "width": 1100
+      }
     },
     {
-      "parameters": {
-        "content": "### 2. Pre-Payment x402 & Store Screening\nChecks `prompt_injection_risk`, `valid_x402_config`, and `safe_to_pay` before allowing agent wallet execution.",
-        "height": 120,
-        "width": 420,
-        "color": 5
-      },
-      "id": "sticky-stage-2-firewall",
-      "name": "Stage 2 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        400,
-        260
-      ]
-    },
-    {
-      "parameters": {
-        "content": "### 3. Policy Gate & Signed Evidence\nOutputs a deterministic ALLOW / BLOCK decision plus cryptographic merchant badge (`/v1/merchant-badge`).",
-        "height": 120,
-        "width": 380,
-        "color": 7
-      },
-      "id": "sticky-stage-3-firewall",
-      "name": "Stage 3 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        860,
-        260
-      ]
-    },
-    {
-      "parameters": {},
-      "id": "fw-node-01",
+      "id": "57f20051-11df-5e29-a2d6-a25787b1f778",
       "name": "Start",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        420
-      ]
+        240,
+        300
+      ],
+      "parameters": {}
     },
     {
+      "id": "e11f669d-40b2-587c-afbe-fa6401da251f",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        300
+      ],
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "f1",
+              "id": "09688b05-768e-526b-9c86-57aeaf0e3679",
               "name": "trial_token",
               "value": "",
               "type": "string"
             },
             {
-              "id": "f2",
+              "id": "cf09dd8a-9090-5a6b-93ac-d1237c0a52c9",
               "name": "target_url",
               "value": "https://example.com",
               "type": "string"
             },
             {
-              "id": "f3",
+              "id": "d034dad8-b76b-5aee-9ca8-b437b183cd0b",
               "name": "merchant_domain",
               "value": "stripe.com",
+              "type": "string"
+            },
+            {
+              "id": "525a3c51-012b-504e-a2c4-3752ce00cd35",
+              "name": "enable_inbox",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1c182652-7826-5c5a-a242-fbc3b7a0dcb7",
+              "name": "inbox_idempotency_key",
+              "value": "={{ 'hirepulse-inbox-'+$execution.id }}",
+              "type": "string"
+            },
+            {
+              "id": "040861da-7b81-5589-80de-387fd23d39d4",
+              "name": "inbox_payment_signature",
+              "value": "",
               "type": "string"
             }
           ]
         },
         "options": {}
-      },
-      "id": "fw-node-02",
-      "name": "Settings",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        200,
-        420
-      ]
+      }
     },
     {
+      "id": "2d2adf79-917e-5655-bf51-7b51974cb37f",
+      "name": "Endpoint Evidence",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/verify-merchant",
@@ -120,35 +98,55 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n safe-spend firewall: x402 endpoint check"
+              "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ target_url: $json.target_url }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "fw-node-03",
-      "name": "1. Screen x402 Endpoint (/v1/verify-merchant)",
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({target_url:$('Settings').first().json.target_url}) }}"
+      }
+    },
+    {
+      "id": "2a85b407-c268-5b7c-97f2-0886f840c535",
+      "name": "Endpoint Evidence - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "02d44233-8bdc-516f-9ea4-133a65821356",
+      "name": "Merchant Badge",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        440,
-        420
-      ]
-    },
-    {
+        1200,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/merchant-badge",
@@ -157,46 +155,285 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n safe-spend firewall: signed merchant evidence"
+              "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $('Settings').first().json.merchant_domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$('Settings').first().json.merchant_domain}) }}"
+      }
+    },
+    {
+      "id": "57ab4aca-1e3f-54b4-b36c-adb2e64bed16",
+      "name": "Merchant Badge - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "05e7d324-e746-5db0-8312-4fbf0d8d1dcc",
+      "name": "Read Markdown",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/clean-markdown",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({url:$('Settings').first().json.target_url,max_chars:15000}) }}"
+      }
+    },
+    {
+      "id": "da945ad0-96c1-5c41-b664-55b5d72a3644",
+      "name": "Read Markdown - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "c2c2604c-bdbc-5b67-ba4c-6d5777dfcca6",
+      "name": "Evidence Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const e=$('Endpoint Evidence - Check response').first().json;const b=$('Merchant Badge - Check response').first().json;return $input.all().map(x=>({json:{endpoint_evidence:e,merchant_evidence:b,page:x.json,policy_decision:e.safe_to_pay===true&&e.prompt_injection_risk==='LOW'?'REVIEW_EVIDENCE_BEFORE_PAYMENT':'HOLD_FOR_REVIEW',wallet_authorized:false,note:'No wallet signature or checkout was executed. Webpage content is untrusted input.'}}));"
+      }
+    },
+    {
+      "id": "ca283a1c-cf5a-5e41-9274-aee0187dd572",
+      "name": "Optional Paid Inbox",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "Optional Paid Inbox",
+              "leftValue": "={{ $('Settings').first().json.enable_inbox }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "519485e4-b992-5694-a0ce-4d0cb1509038",
+      "name": "Allocate Test Inbox",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/email/inboxes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            },
+            {
+              "name": "PAYMENT-SIGNATURE",
+              "value": "={{ $('Settings').first().json.inbox_payment_signature }}"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({idempotency_key:$('Settings').first().json.inbox_idempotency_key,ttl_seconds:600}) }}"
+      }
+    },
+    {
+      "id": "f2bcc40d-75e3-5524-afb4-6171fb97ab9d",
+      "name": "Allocate Test Inbox - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "d011f9af-3ddb-58a8-a68d-83534d45d774",
+      "name": "Read OTP Candidate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        300
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://gethirepulse.xyz/v1/email/inboxes/'+$json.inbox_id+'/code' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer '+$('Allocate Test Inbox - Check response').first().json.access_token }}"
+            },
+            {
+              "name": "X-Inbox-Capability",
+              "value": "={{ $('Allocate Test Inbox - Check response').first().json.capability }}"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
         }
-      },
-      "id": "fw-node-04",
-      "name": "2. Verify Merchant & Signed Badge (/v1/merchant-badge)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        700,
-        420
-      ]
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const x402Check = $('1. Screen x402 Endpoint (/v1/verify-merchant)').first().json || {};\nconst shopCheck = $input.first().json || {};\nconst injectionRisk = x402Check.prompt_injection_risk || 'UNKNOWN';\nconst allowWallet = Boolean(x402Check.safe_to_pay) && injectionRisk === 'LOW';\nreturn [{\n  json: {\n    target_url: x402Check.target_url,\n    x402_trust_score: x402Check.trust_score ?? 0,\n    prompt_injection_risk: injectionRisk,\n    matched_injection_flags: x402Check.matched_flags || [],\n    wallet_policy_decision: allowWallet ? 'ALLOW_X402_PAYMENT' : 'HOLD_REQUIRES_HUMAN_APPROVAL',\n    merchant_domain: shopCheck.domain,\n    merchant_trust_score: shopCheck.trust_score ?? 0,\n    merchant_risk_level: shopCheck.risk_level || 'UNKNOWN',\n    signed_evidence_issued: Boolean(shopCheck.signed_statement),\n    recommendation: x402Check.recommendation || shopCheck.recommendation\n  }\n}];"
-      },
-      "id": "fw-node-05",
-      "name": "Enforce Safe-Spend Firewall Policy",
+      "id": "fa726052-e09a-5b5a-92f5-9cde65257c2f",
+      "name": "Read OTP Candidate - Check response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        980,
-        420
-      ]
+        3360,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "0328e401-55c5-5d68-9b02-e8fb35ea2947",
+      "name": "OTP Result Without Credentials",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(x=>({json:{status:x.json.status,code:x.json.code??null,note:'Pending/no_code/ambiguous is not a usable OTP. No polling loop, message sending or third-party submission was performed. Inbox expires after600seconds; keep allocation credentials private.'}}));"
+      }
     }
   ],
   "connections": {
@@ -215,29 +452,139 @@
       "main": [
         [
           {
-            "node": "1. Screen x402 Endpoint (/v1/verify-merchant)",
+            "node": "Endpoint Evidence",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. Screen x402 Endpoint (/v1/verify-merchant)": {
+    "Endpoint Evidence": {
       "main": [
         [
           {
-            "node": "2. Verify Merchant & Signed Badge (/v1/merchant-badge)",
+            "node": "Endpoint Evidence - Check response",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Verify Merchant & Signed Badge (/v1/merchant-badge)": {
+    "Endpoint Evidence - Check response": {
       "main": [
         [
           {
-            "node": "Enforce Safe-Spend Firewall Policy",
+            "node": "Merchant Badge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merchant Badge": {
+      "main": [
+        [
+          {
+            "node": "Merchant Badge - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merchant Badge - Check response": {
+      "main": [
+        [
+          {
+            "node": "Read Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Markdown": {
+      "main": [
+        [
+          {
+            "node": "Read Markdown - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Markdown - Check response": {
+      "main": [
+        [
+          {
+            "node": "Evidence Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evidence Report": {
+      "main": [
+        [
+          {
+            "node": "Optional Paid Inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Optional Paid Inbox": {
+      "main": [
+        [
+          {
+            "node": "Allocate Test Inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Allocate Test Inbox": {
+      "main": [
+        [
+          {
+            "node": "Allocate Test Inbox - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Allocate Test Inbox - Check response": {
+      "main": [
+        [
+          {
+            "node": "Read OTP Candidate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read OTP Candidate": {
+      "main": [
+        [
+          {
+            "node": "Read OTP Candidate - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read OTP Candidate - Check response": {
+      "main": [
+        [
+          {
+            "node": "OTP Result Without Credentials",
             "type": "main",
             "index": 0
           }
@@ -246,11 +593,16 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
+    "hirepulseSourceCommit": "9bff417",
+    "hirepulseReviewed": true,
+    "automaticPayments": false
   },
   "tags": []
 }

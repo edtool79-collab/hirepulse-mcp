@@ -64,7 +64,7 @@ curl -X POST 'https://gethirepulse.xyz/v1/company-profile?ref=github' \
 
 `example.com` returns explicitly labeled synthetic sandbox data, not a live company result, and does not consume the shared free allowance.
 
-For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligible business email or active Base wallet a one-time 25-call pass valid for 30 days. No email is sent. Keep the returned token private; send it using `X-Trial-Token` or MCP `params._meta["hirepulse/trial_token"]`. Private lookup and paid inbox allocation are excluded.
+For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligible business email or active Base wallet a one-time 25-call pass valid for 30 days. No email is sent. Keep the returned token private; send it using `X-Trial-Token` or MCP `params._meta["hirepulse/trial_token"]`. The25calls are shared across supported single-domain data tools; they are not locked to one tool. Private lookup, quote redemption and paid inbox allocation are excluded.
 
 [Guided setup and demo](https://gethirepulse.xyz/?ref=github#start-b2b) · [Investor radar n8n workflow](https://gethirepulse.xyz/templates/n8n-investor-radar.json) · [API catalog](https://gethirepulse.xyz/v1/catalog)
 
@@ -98,12 +98,12 @@ outside `arguments`, or with the HTTP `X-Private-Query-Tier: bundle` header.
 
 ## Open-Source n8n Super-Tool Workflows (`templates/`)
 
-Ready-to-import n8n workflows that chain HirePulse endpoints into complete business pipelines (see [`templates/SUPER_TOOLS_PLAYBOOK.md`](./templates/SUPER_TOOLS_PLAYBOOK.md) for full documentation and `curl` recipes):
+Manual n8n workflows with free Sandbox defaults, connected processing stages and explicit HTTP error stops. Optional private lookups and paid inbox allocation are disabled by default. No workflow signs a wallet transaction or authorizes checkout. Reviewed structurally and with offline node fixtures; not imported into a live n8n instance during this repair (see [`templates/SUPER_TOOLS_PLAYBOOK.md`](./templates/SUPER_TOOLS_PLAYBOOK.md) for full documentation and `curl` recipes):
 
-1. **[The $0.035 Clay Killer — Zero-Waste Outbound Sniper](./templates/n8n-zero-waste-outbound-sniper.json)**: Filters domains by live ATS hiring velocity (`/v1/company-intent`) and Google Ads (`/v1/google-ads`) **before** running tech-stack (`/v1/tech-stack`) and contact/MX extraction (`/v1/extract-contacts`).
-2. **[E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit](./templates/n8n-shopify-ucp-acp-agency-kit.json)**: Audits online stores for Google/Shopify UCP (`/.well-known/ucp`), OpenAI/Stripe ACP (`/.well-known/acp/config.json`), and JSON-LD schema gaps (`/v1/store-readiness`), cross-referenced with active ad spend and store contacts (`/v1/conversion-leads`).
-3. **[Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod](./templates/n8n-agent-safe-spend-and-otp-pod.json)**: Screens x402 endpoints (`/v1/verify-merchant`) and online merchants (`/v1/merchant-badge`) for prompt-injection flags and trust signals before allowing autonomous wallet payments.
-4. **[Stealth VC Due Diligence & Instant Vendor Risk X-Ray](./templates/n8n-stealth-vc-and-vendor-xray.json)**: Combines operating footprint checks (`/v1/company-footprint`) and live ATS department breakdowns (`/v1/ats-jobs`) for procurement and investor diligence.
+1. **[Zero-Waste Outbound Sniper](./templates/n8n-zero-waste-outbound-sniper.json)**: Filters domains by live ATS hiring velocity (`/v1/company-intent`) and Google Ads (`/v1/google-ads`) **before** running tech-stack (`/v1/tech-stack`) and contact/MX extraction (`/v1/extract-contacts`). Screening costs up to$0.02per candidate and enrichment up to$0.015per selected company before free quota; discarded companies can still incur screening cost.
+2. **[E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit](./templates/n8n-shopify-ucp-acp-agency-kit.json)**: Audits online stores for Google/Shopify UCP (`/.well-known/ucp`), OpenAI/Stripe ACP (`/.well-known/acp/config.json`), and JSON-LD schema gaps (`/v1/store-readiness`), cross-referenced with ad and public-contact evidence (`/v1/conversion-leads`), followed by competitor comparison (`/v1/schema-comparator`). No certification or measured conversion loss is implied.
+3. **[Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod](./templates/n8n-agent-safe-spend-and-otp-pod.json)**: Screens x402 endpoints (`/v1/verify-merchant`) and online merchants (`/v1/merchant-badge`) for prompt-injection flags and trust signals, then reads bounded Markdown. Optional paid inbox allocation and one OTP candidate read require explicit setup. Heuristic evidence does not authorize payment or guarantee safety.
+4. **[Stealth VC Due Diligence & Instant Vendor Risk X-Ray](./templates/n8n-stealth-vc-and-vendor-xray.json)**: Combines operating footprint (`/v1/company-footprint`), vendor assessment (`/v1/vendor-health`) and jobs (`/v1/ats-jobs`). An optional private lookup is disabled by default; later direct calls remain direct. Public signals are not financial forecasts.
 5. **[Stealth Breakout & Investor Radar](./templates/n8n-investor-radar.json)**: Screens domain shortlists via `/v1/company-profile` for strong/moderate breakout signals.
 
 ## Requirements
@@ -119,9 +119,7 @@ when your client (such as Claude Desktop) only supports local stdio MCP servers.
 
 ## Free Sandbox Domains
 
-Calls targeting `linear.app`, `stripe.com`, `shopify.com`, and `example.com`
-are free on the remote gateway so you can test tool calling end-to-end
-without an x402 wallet.
+Calls targeting `example.com`, `linear.app`, `stripe.com`, `shopify.com`, and `vercel.com` are free on supported single-tool routes, including URL and vendor-domain inputs. Every comparator domain must also be allowlisted. `example.com` is a labeled synthetic preview; other allowlisted samples may be cached. These calls do not consume the shared5daily free calls. Private lookup, quote redemption and paid email allocation are excluded. Quote-only and reserved probe requests still return payment terms.
 
 ## License
 
