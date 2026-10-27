@@ -1,0 +1,274 @@
+{
+  "name": "HirePulse Super-Tool #4 – Stealth VC Due Diligence & Instant Vendor Risk X-Ray",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🕵️‍♂️ Super-Tool #4: Stealth VC Due Diligence & Instant Vendor Risk X-Ray\nReplaces $20,000/yr vendor risk platforms (UpGuard / SecurityScorecard) and prevents target domain metadata leaks during sensitive VC/M&A research:\n1. **Operating Footprint Verification (`/v1/company-footprint`, $0.03)**: Verifies real-world operating evidence (active analytics/ad tags, live job boards, and Google Ads transparency records).\n2. **ATS Department & Role Velocity (`/v1/ats-jobs`, $0.01)**: Audits live engineering vs. sales headcount expansion and published salary bands.\n3. **Vendor Stability & Blind Proxy Support (`/v1/vendor-health`, $0.10 / `/v1/private-query`, $0.02–$0.04)**: Evaluates B2B vendor procurement stability and supports blind proxy execution so target domains are stripped from x402 facilitator metadata.",
+        "height": 210,
+        "width": 1220,
+        "color": 6
+      },
+      "id": "sticky-header-xray",
+      "name": "Workflow Overview Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Target Vendors / Portfolio Companies\nEnter domains in Settings.\nFree sandbox domains: `linear.app`, `stripe.com`, `shopify.com`, `example.com`.",
+        "height": 120,
+        "width": 360,
+        "color": 4
+      },
+      "id": "sticky-stage-1-xray",
+      "name": "Stage 1 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 2. Multi-Signal Operating Evidence\nCross-checks `/v1/company-footprint` and `/v1/ats-jobs` for live engineering/compliance hiring and email DNS posture.",
+        "height": 120,
+        "width": 420,
+        "color": 5
+      },
+      "id": "sticky-stage-2-xray",
+      "name": "Stage 2 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 3. Due Diligence Dossier Output\nProduces a structured procurement & VC diligence scorecard with verified operational signals.",
+        "height": 120,
+        "width": 380,
+        "color": 7
+      },
+      "id": "sticky-stage-3-xray",
+      "name": "Stage 3 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        860,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "xray-node-01",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "x1",
+              "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "x2",
+              "name": "vendor_domains",
+              "value": "linear.app, stripe.com, shopify.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "xray-node-02",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = String($input.first().json.vendor_domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
+      },
+      "id": "xray-node-03",
+      "name": "Split Vendor Domains",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/company-footprint",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n vendor xray: operating footprint check"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "xray-node-04",
+      "name": "1. Operating Footprint Check (/v1/company-footprint)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/ats-jobs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n vendor xray: ats department breakdown"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "xray-node-05",
+      "name": "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const footprints = $('1. Operating Footprint Check (/v1/company-footprint)').all();\nconst jobsList = $input.all();\nconst dossiers = [];\nfor (let i = 0; i < jobsList.length; i++) {\n  const f = (footprints[i] && footprints[i].json) || {};\n  const j = (jobsList[i] && jobsList[i].json) || {};\n  const fp = f.footprint || {};\n  const tech = f.tech_stack || {};\n  const intent = f.hiring_intent || {};\n  dossiers.push({\n    json: {\n      domain: f.domain || j.domain,\n      sections_with_verified_data: (f.sections_with_data || []).join(', '),\n      website_tags_status: fp.website_ad_or_analytics_tags || 'unknown',\n      active_job_board: fp.job_board_with_open_roles || 'unknown',\n      active_google_ads: fp.google_ads_transparency_records || 'unknown',\n      ats_provider: j.ats_provider || intent.ats_provider || null,\n      total_open_roles: j.total_jobs ?? intent.total_open_roles ?? 0,\n      hiring_velocity_status: intent.hiring_status || 'unknown',\n      hosting_and_cdn: (tech.hosting_cdn || []).join(', '),\n      diligence_summary: `Verified sections: ${(f.sections_with_data || []).length}/3. Open roles: ${j.total_jobs ?? intent.total_open_roles ?? 0}.`\n    }\n  });\n}\nreturn dossiers;"
+      },
+      "id": "xray-node-06",
+      "name": "Compile Due Diligence & Vendor X-Ray Dossier",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "Split Vendor Domains",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Vendor Domains": {
+      "main": [
+        [
+          {
+            "node": "1. Operating Footprint Check (/v1/company-footprint)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Operating Footprint Check (/v1/company-footprint)": {
+      "main": [
+        [
+          {
+            "node": "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)": {
+      "main": [
+        [
+          {
+            "node": "Compile Due Diligence & Vendor X-Ray Dossier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

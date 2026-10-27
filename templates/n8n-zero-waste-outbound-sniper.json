@@ -1,0 +1,405 @@
+{
+  "name": "HirePulse Super-Tool #1 – The $0.035 Clay Killer (Zero-Waste Outbound Sniper)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🎯 Super-Tool #1: The $0.035 Clay Killer (Zero-Waste Outbound Sniper)\nReplaces $300–$800/mo Clay & Apollo credit burn by filtering out inactive companies **before** paying for contact enrichment:\n1. **Step 1 (Free / $0.01)**: `POST /v1/ats-jobs` + `POST /v1/google-ads` — Checks live hiring velocity (Greenhouse, Lever, Ashby, Workable) and active Google Ads campaigns.\n2. **Step 2 (Pre-Enrichment Gate)**: Drops 80%+ of dead/frozen domains at $0 enrichment cost.\n3. **Step 3 ($0.005 + $0.01)**: Runs `POST /v1/tech-stack` + `POST /v1/extract-contacts` ONLY on verified active buyers (Total: **$0.035 per qualified lead**, $0 on empty results).",
+        "height": 210,
+        "width": 1220,
+        "color": 6
+      },
+      "id": "sticky-header-sniper",
+      "name": "Workflow Overview Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Target Domain Batch\nPaste up to 50 domains in Settings.\nFree sandbox domains: `linear.app`, `stripe.com`, `shopify.com`, `example.com`.",
+        "height": 120,
+        "width": 360,
+        "color": 4
+      },
+      "id": "sticky-stage-1-sniper",
+      "name": "Stage 1 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 2. Zero-Waste Intent Gate\nChecks live ATS job postings (`/v1/ats-jobs`) and Google Ads (`/v1/google-ads`). Empty results cost $0.00.",
+        "height": 120,
+        "width": 400,
+        "color": 5
+      },
+      "id": "sticky-stage-2-sniper",
+      "name": "Stage 2 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        420,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 3. Qualified Tech + Contact Sniper\nEnriches ONLY active buyers with `/v1/tech-stack` + `/v1/extract-contacts` (MX/SPF/DMARC + emails + socials).",
+        "height": 120,
+        "width": 380,
+        "color": 7
+      },
+      "id": "sticky-stage-3-sniper",
+      "name": "Stage 3 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        860,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "sniper-node-01",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "domains",
+              "value": "linear.app, stripe.com, shopify.com",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "min_open_roles_or_ads",
+              "value": 1,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "sniper-node-02",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        420
+      ],
+      "notes": "Demo domains (linear.app, stripe.com, shopify.com, example.com) are 100% free. Other domains share 5 free calls/day/IP or use X-Trial-Token."
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = String($input.first().json.domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
+      },
+      "id": "sniper-node-03",
+      "name": "Split Domains",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/company-intent",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n zero-waste outbound sniper: step 1 hiring intent"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1000
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "sniper-node-04",
+      "name": "1. Check Hiring Intent (/v1/company-intent)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/google-ads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n zero-waste outbound sniper: step 2 google ads"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1000
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "sniper-node-05",
+      "name": "2. Check Active Google Ads (/v1/google-ads)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const intents = $('1. Check Hiring Intent (/v1/company-intent)').all();\nconst adsList = $input.all();\nconst qualified = [];\nfor (let i = 0; i < adsList.length; i++) {\n  const intent = (intents[i] && intents[i].json) || {};\n  const ads = (adsList[i] && adsList[i].json) || {};\n  const domain = ads.domain || intent.domain;\n  const openRoles = Number(intent.total_open_roles || 0);\n  const adsReturned = Number(ads.ads_returned || 0);\n  const intentScore = Number(intent.intent_score || 0);\n  if (openRoles > 0 || adsReturned > 0 || intentScore >= 30) {\n    qualified.push({\n      json: {\n        domain,\n        intent_score: intentScore,\n        open_roles: openRoles,\n        hiring_status: intent.hiring_status || 'unknown',\n        active_google_ads: adsReturned,\n        top_functions: (intent.top_functions || []).join(', ')\n      }\n    });\n  }\n}\nreturn qualified;"
+      },
+      "id": "sniper-node-06",
+      "name": "Filter Only Active Buyers (Drop Dead Leads)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/tech-stack",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "sniper-node-07",
+      "name": "3. Detect Tech Stack (/v1/tech-stack)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/extract-contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "sniper-node-08",
+      "name": "4. Extract Contacts & MX (/v1/extract-contacts)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const buyers = $('Filter Only Active Buyers (Drop Dead Leads)').all();\nconst techs = $('3. Detect Tech Stack (/v1/tech-stack)').all();\nconst contacts = $input.all();\nconst out = [];\nfor (let i = 0; i < contacts.length; i++) {\n  const b = (buyers[i] && buyers[i].json) || {};\n  const t = (techs[i] && techs[i].json) || {};\n  const c = (contacts[i] && contacts[i].json) || {};\n  out.push({\n    json: {\n      domain: c.domain || b.domain,\n      intent_score: b.intent_score,\n      open_roles: b.open_roles,\n      active_google_ads: b.active_google_ads,\n      ad_pixels: (t.ad_pixels || []).join(', '),\n      analytics_and_crm: (t.analytics || []).concat(t.marketing_tools || []).join(', '),\n      email_deliverable_mx: Boolean(c.email_deliverable),\n      inferred_email_pattern: c.inferred_email_pattern || null,\n      published_emails: (c.emails || []).join(', '),\n      social_links: (c.social_links || []).join(', '),\n      total_api_cost_usd: '$0.035 (or $0.00 on sandbox/free tier)'\n    }\n  });\n}\nreturn out;"
+      },
+      "id": "sniper-node-09",
+      "name": "Ready-to-Send Outbound Lead Sheet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        340
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "Split Domains",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Domains": {
+      "main": [
+        [
+          {
+            "node": "1. Check Hiring Intent (/v1/company-intent)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Check Hiring Intent (/v1/company-intent)": {
+      "main": [
+        [
+          {
+            "node": "2. Check Active Google Ads (/v1/google-ads)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Check Active Google Ads (/v1/google-ads)": {
+      "main": [
+        [
+          {
+            "node": "Filter Only Active Buyers (Drop Dead Leads)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Only Active Buyers (Drop Dead Leads)": {
+      "main": [
+        [
+          {
+            "node": "3. Detect Tech Stack (/v1/tech-stack)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Detect Tech Stack (/v1/tech-stack)": {
+      "main": [
+        [
+          {
+            "node": "4. Extract Contacts & MX (/v1/extract-contacts)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Extract Contacts & MX (/v1/extract-contacts)": {
+      "main": [
+        [
+          {
+            "node": "Ready-to-Send Outbound Lead Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

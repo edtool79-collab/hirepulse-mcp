@@ -1,0 +1,256 @@
+{
+  "name": "HirePulse Super-Tool #3 – Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🛡️ Super-Tool #3: Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod\nProtects autonomous AI agents and x402 wallets from **Indirect Prompt Injection**, fake 402 payment traps, and unverified merchants:\n1. **x402 API Endpoint Firewall (`/v1/verify-merchant`, $0.002)**: Screens target URLs for valid TLS, x402 discovery files, Coinbase CDP Bazaar reputation, price gouging, and prompt-injection flags before your agent signs a payment.\n2. **Online Store Trust Check (`/v1/merchant-trust`, $0.005)**: Screens e-commerce domains for operational footprint before agentic checkout.\n3. **Sanitized Markdown Reader (`/v1/clean-markdown`, $0.002)** & **Ephemeral OTP Inbox (`/v1/email/inboxes`, $0.01/10m)**: Strips malicious scripts/ads and provides disposable inbound OTP verification for authorized testing.",
+        "height": 210,
+        "width": 1220,
+        "color": 6
+      },
+      "id": "sticky-header-firewall",
+      "name": "Workflow Overview Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Target Endpoint & Merchant\nSet `target_url` and `merchant_domain` in Settings.\nFree sandbox: `https://example.com` and `example.com`.",
+        "height": 120,
+        "width": 360,
+        "color": 4
+      },
+      "id": "sticky-stage-1-firewall",
+      "name": "Stage 1 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 2. Pre-Payment x402 & Store Screening\nChecks `prompt_injection_risk`, `valid_x402_config`, and `safe_to_pay` before allowing agent wallet execution.",
+        "height": 120,
+        "width": 420,
+        "color": 5
+      },
+      "id": "sticky-stage-2-firewall",
+      "name": "Stage 2 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 3. Policy Gate & Signed Evidence\nOutputs a deterministic ALLOW / BLOCK decision plus cryptographic merchant badge (`/v1/merchant-badge`).",
+        "height": 120,
+        "width": 380,
+        "color": 7
+      },
+      "id": "sticky-stage-3-firewall",
+      "name": "Stage 3 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        860,
+        260
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "fw-node-01",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1",
+              "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f2",
+              "name": "target_url",
+              "value": "https://example.com",
+              "type": "string"
+            },
+            {
+              "id": "f3",
+              "name": "merchant_domain",
+              "value": "stripe.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fw-node-02",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/verify-merchant",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n safe-spend firewall: x402 endpoint check"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ target_url: $json.target_url }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "fw-node-03",
+      "name": "1. Screen x402 Endpoint (/v1/verify-merchant)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/merchant-badge",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n safe-spend firewall: signed merchant evidence"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ domain: $('Settings').first().json.merchant_domain }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "fw-node-04",
+      "name": "2. Verify Merchant & Signed Badge (/v1/merchant-badge)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x402Check = $('1. Screen x402 Endpoint (/v1/verify-merchant)').first().json || {};\nconst shopCheck = $input.first().json || {};\nconst injectionRisk = x402Check.prompt_injection_risk || 'UNKNOWN';\nconst allowWallet = Boolean(x402Check.safe_to_pay) && injectionRisk === 'LOW';\nreturn [{\n  json: {\n    target_url: x402Check.target_url,\n    x402_trust_score: x402Check.trust_score ?? 0,\n    prompt_injection_risk: injectionRisk,\n    matched_injection_flags: x402Check.matched_flags || [],\n    wallet_policy_decision: allowWallet ? 'ALLOW_X402_PAYMENT' : 'HOLD_REQUIRES_HUMAN_APPROVAL',\n    merchant_domain: shopCheck.domain,\n    merchant_trust_score: shopCheck.trust_score ?? 0,\n    merchant_risk_level: shopCheck.risk_level || 'UNKNOWN',\n    signed_evidence_issued: Boolean(shopCheck.signed_statement),\n    recommendation: x402Check.recommendation || shopCheck.recommendation\n  }\n}];"
+      },
+      "id": "fw-node-05",
+      "name": "Enforce Safe-Spend Firewall Policy",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "1. Screen x402 Endpoint (/v1/verify-merchant)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Screen x402 Endpoint (/v1/verify-merchant)": {
+      "main": [
+        [
+          {
+            "node": "2. Verify Merchant & Signed Badge (/v1/merchant-badge)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Verify Merchant & Signed Badge (/v1/merchant-badge)": {
+      "main": [
+        [
+          {
+            "node": "Enforce Safe-Spend Firewall Policy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

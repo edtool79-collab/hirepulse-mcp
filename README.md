@@ -1,6 +1,6 @@
 # HirePulse company research MCP
 
-Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts.
+Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts. Includes open-source **n8n Turnkey Super-Tool Workflows** (`templates/`).
 
 [Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 8-tool B2B profile, try a labeled free demo, then research a real domain.
 
@@ -77,7 +77,7 @@ For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligib
 ## Proxy behavior and pricing
 
 The proxy forwards the live gateway catalog: 26 canonical MCP tools in version 12
-(verified 26 October 2026). The legacy names `00_ask_hirepulse_advisor` and
+(verified 27 October 2026). The legacy names `00_ask_hirepulse_advisor` and
 `verify_domain_legitimacy_and_security` remain callable for compatibility but
 are omitted from `tools/list`. Schemas are forwarded from the gateway rather
 than maintained in a second copy. Every input parameter has a description.
@@ -95,6 +95,16 @@ payment. Neither scan certifies safety or authorizes spending. For
 `private_blind_lookup`, `arguments` contains only `tool` and `target`; select the
 bundle tier in MCP request metadata `params._meta["hirepulse/private-tier"]`,
 outside `arguments`, or with the HTTP `X-Private-Query-Tier: bundle` header.
+
+## Open-Source n8n Super-Tool Workflows (`templates/`)
+
+Ready-to-import n8n workflows that chain HirePulse endpoints into complete business pipelines (see [`templates/SUPER_TOOLS_PLAYBOOK.md`](./templates/SUPER_TOOLS_PLAYBOOK.md) for full documentation and `curl` recipes):
+
+1. **[The $0.035 Clay Killer — Zero-Waste Outbound Sniper](./templates/n8n-zero-waste-outbound-sniper.json)**: Filters domains by live ATS hiring velocity (`/v1/company-intent`) and Google Ads (`/v1/google-ads`) **before** running tech-stack (`/v1/tech-stack`) and contact/MX extraction (`/v1/extract-contacts`).
+2. **[E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit](./templates/n8n-shopify-ucp-acp-agency-kit.json)**: Audits online stores for Google/Shopify UCP (`/.well-known/ucp`), OpenAI/Stripe ACP (`/.well-known/acp/config.json`), and JSON-LD schema gaps (`/v1/store-readiness`), cross-referenced with active ad spend and store contacts (`/v1/conversion-leads`).
+3. **[Autonomous Agent Safe-Spend Firewall & Ephemeral OTP Pod](./templates/n8n-agent-safe-spend-and-otp-pod.json)**: Screens x402 endpoints (`/v1/verify-merchant`) and online merchants (`/v1/merchant-badge`) for prompt-injection flags and trust signals before allowing autonomous wallet payments.
+4. **[Stealth VC Due Diligence & Instant Vendor Risk X-Ray](./templates/n8n-stealth-vc-and-vendor-xray.json)**: Combines operating footprint checks (`/v1/company-footprint`) and live ATS department breakdowns (`/v1/ats-jobs`) for procurement and investor diligence.
+5. **[Stealth Breakout & Investor Radar](./templates/n8n-investor-radar.json)**: Screens domain shortlists via `/v1/company-profile` for strong/moderate breakout signals.
 
 ## Requirements
 
