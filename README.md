@@ -2,6 +2,8 @@
 
 Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts.
 
+[Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 8-tool B2B profile, try a labeled free demo, then research a real domain.
+
 ## Start with remote MCP: 8 focused B2B tools
 
 No npm package is needed for clients that support remote HTTP MCP:
