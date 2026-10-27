@@ -1,0 +1,168 @@
+{
+  "name": "HirePulse Super-Tool #1 - The $0.035 Clay Killer (Zero-Waste Outbound Sniper)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": "string"
+      },
+      "mapper": {
+        "json": "{\"domains\": [\"linear.app\", \"stripe.com\", \"shopify.com\"]}"
+      },
+      "metadata": {
+        "designer": {
+          "x": -300,
+          "y": 0,
+          "name": "Target Domains Batch"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:Iterator",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "array": "{{1.domains}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": -100,
+          "y": 0,
+          "name": "Iterate Domains"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendARequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true,
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "mapper": {
+        "url": "https://gethirepulse.xyz/v1/ats-jobs",
+        "method": "post",
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{\"domain\": \"{{2.value}}\"}",
+        "serializeUrl": false,
+        "shareCookies": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 100,
+          "y": -100,
+          "name": "Step 1: Live ATS Job Signals ($0.01)"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendARequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true,
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "mapper": {
+        "url": "https://gethirepulse.xyz/v1/google-ads",
+        "method": "post",
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{\"domain\": \"{{2.value}}\"}",
+        "serializeUrl": false,
+        "shareCookies": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 100,
+          "y": 100,
+          "name": "Step 2: Google Ads Spend Signals ($0.01)"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "http:ActionSendARequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true,
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "filter": {
+        "name": "Active Spender Filter (Jobs > 0 OR Ads > 0)",
+        "conditions": [
+          [
+            {
+              "a": "{{3.data.jobs_count}}",
+              "o": "number:greaterThan",
+              "b": 0
+            }
+          ],
+          [
+            {
+              "a": "{{4.data.ads_count}}",
+              "o": "number:greaterThan",
+              "b": 0
+            }
+          ]
+        ]
+      },
+      "mapper": {
+        "url": "https://gethirepulse.xyz/v1/extract-contacts",
+        "method": "post",
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{\"domain\": \"{{2.value}}\"}",
+        "serializeUrl": false,
+        "shareCookies": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 350,
+          "y": 0,
+          "name": "Step 3: Enrich Verified Contacts ($0.01)"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  }
+}

@@ -10,7 +10,8 @@ Instead of calling individual endpoints in isolation, these **4 open-source Supe
 ---
 
 ## 1. The $0.035 Clay Killer — Zero-Waste Outbound Sniper
-**Template:** [`n8n-zero-waste-outbound-sniper.json`](./n8n-zero-waste-outbound-sniper.json)
+- **n8n Template:** [`n8n-zero-waste-outbound-sniper.json`](./n8n-zero-waste-outbound-sniper.json)
+- **Make.com Blueprint:** [`make-zero-waste-outbound-sniper.json`](./make-zero-waste-outbound-sniper.json)
 
 ### Why it exists
 Traditional outbound waterfalls burn enrichment credits on 80%+ of domains that have frozen hiring and zero active ad spend. This pipeline checks deterministic operational velocity first and enriches contacts **only** when a company is actively expanding.
@@ -31,7 +32,8 @@ curl -s -X POST https://gethirepulse.xyz/v1/company-profile \
 ---
 
 ## 2. E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit
-**Template:** [`n8n-shopify-ucp-acp-agency-kit.json`](./n8n-shopify-ucp-acp-agency-kit.json)
+- **n8n Template:** [`n8n-shopify-ucp-acp-agency-kit.json`](./n8n-shopify-ucp-acp-agency-kit.json)
+- **Make.com Blueprint:** [`make-shopify-ucp-acp-agency-kit.json`](./make-shopify-ucp-acp-agency-kit.json)
 
 ### Why it exists
 With Google/Shopify's **Universal Commerce Protocol (UCP)** and OpenAI/Stripe's **Agentic Commerce Protocol (ACP)**, AI shopping agents require `/.well-known/ucp`, `/.well-known/acp/config.json`, complete JSON-LD product offer schemas, and open `robots.txt` policies. Over 75% of stores fail these checks while actively paying for Google Ads.

@@ -1,0 +1,139 @@
+{
+  "name": "HirePulse Super-Tool #2 - UCP / ACP Shopify Store Readiness Auditor",
+  "flow": [
+    {
+      "id": 1,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": "string"
+      },
+      "mapper": {
+        "json": "{\"stores\": [\"gymshark.com\", \"allbirds.com\", \"fashionnova.com\"]}"
+      },
+      "metadata": {
+        "designer": {
+          "x": -300,
+          "y": 0,
+          "name": "Target Store List"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:Iterator",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "array": "{{1.stores}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": -100,
+          "y": 0,
+          "name": "Iterate Stores"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendARequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true,
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "mapper": {
+        "url": "https://gethirepulse.xyz/v1/schema-comparator",
+        "method": "post",
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{\"url\": \"https://{{2.value}}\"}",
+        "serializeUrl": false,
+        "shareCookies": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 100,
+          "y": -100,
+          "name": "Step 1: UCP / ACP Schema Comparator ($0.01)"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendARequest",
+      "version": 3,
+      "parameters": {
+        "handleErrors": false,
+        "useCustomHeaders": true,
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "mapper": {
+        "url": "https://gethirepulse.xyz/v1/store-readiness",
+        "method": "post",
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{\"url\": \"https://{{2.value}}\"}",
+        "serializeUrl": false,
+        "shareCookies": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 100,
+          "y": 100,
+          "name": "Step 2: Agent Store Readiness Score ($0.015)"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "json:CreateJSON",
+      "version": 1,
+      "parameters": {
+        "type": "object"
+      },
+      "mapper": {
+        "store": "{{2.value}}",
+        "schema_compliance": "{{3.data}}",
+        "agent_readiness_score": "{{4.data.score}}",
+        "leak_points": "{{4.data.conversion_leaks}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 350,
+          "y": 0,
+          "name": "Generate Agency Audit Report"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  }
+}
