@@ -1,131 +1,90 @@
 {
-  "name": "HirePulse Super-Tool #1 – The $0.035 Clay Killer (Zero-Waste Outbound Sniper)",
+  "name": "HirePulse Zero-Waste Outbound Sniper",
+  "active": false,
   "nodes": [
     {
-      "parameters": {
-        "content": "## 🎯 Super-Tool #1: The $0.035 Clay Killer (Zero-Waste Outbound Sniper)\nReplaces $300–$800/mo Clay & Apollo credit burn by filtering out inactive companies **before** paying for contact enrichment:\n1. **Step 1 (Free / $0.01)**: `POST /v1/ats-jobs` + `POST /v1/google-ads` — Checks live hiring velocity (Greenhouse, Lever, Ashby, Workable) and active Google Ads campaigns.\n2. **Step 2 (Pre-Enrichment Gate)**: Drops 80%+ of dead/frozen domains at $0 enrichment cost.\n3. **Step 3 ($0.005 + $0.01)**: Runs `POST /v1/tech-stack` + `POST /v1/extract-contacts` ONLY on verified active buyers (Total: **$0.035 per qualified lead**, $0 on empty results).",
-        "height": 210,
-        "width": 1220,
-        "color": 6
-      },
-      "id": "sticky-header-sniper",
-      "name": "Workflow Overview Note",
+      "id": "1068de28-5e79-5c06-a5bc-8f4593856481",
+      "name": "Read Me",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        20
-      ]
-    },
-    {
+        300
+      ],
       "parameters": {
-        "content": "### 1. Target Domain Batch\nPaste up to 50 domains in Settings.\nFree sandbox domains: `linear.app`, `stripe.com`, `shopify.com`, `example.com`.",
-        "height": 120,
-        "width": 360,
-        "color": 4
-      },
-      "id": "sticky-stage-1-sniper",
-      "name": "Stage 1 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        260
-      ]
+        "content": "Screen each candidate with hiring intent and Google Ads; enrich only selected companies. List price:$0.02 per screened company +$0.015 per selected company when all four calls have data. Discarded companies can still incur screening costs. No verified competitor-cost savings or lead conversion rate is promised. Optional batch/hot-buyers quotes are separate flows, with paid redemption and3daily scans/IP.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
+        "height": 300,
+        "width": 1100
+      }
     },
     {
-      "parameters": {
-        "content": "### 2. Zero-Waste Intent Gate\nChecks live ATS job postings (`/v1/ats-jobs`) and Google Ads (`/v1/google-ads`). Empty results cost $0.00.",
-        "height": 120,
-        "width": 400,
-        "color": 5
-      },
-      "id": "sticky-stage-2-sniper",
-      "name": "Stage 2 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        420,
-        260
-      ]
-    },
-    {
-      "parameters": {
-        "content": "### 3. Qualified Tech + Contact Sniper\nEnriches ONLY active buyers with `/v1/tech-stack` + `/v1/extract-contacts` (MX/SPF/DMARC + emails + socials).",
-        "height": 120,
-        "width": 380,
-        "color": 7
-      },
-      "id": "sticky-stage-3-sniper",
-      "name": "Stage 3 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        860,
-        260
-      ]
-    },
-    {
-      "parameters": {},
-      "id": "sniper-node-01",
+      "id": "6cbfd078-06b4-5c28-939e-a68d1adddbe4",
       "name": "Start",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        420
-      ]
+        240,
+        300
+      ],
+      "parameters": {}
     },
     {
+      "id": "6b2ff1cc-c51d-5506-abb8-62fcc040005c",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        300
+      ],
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "s1",
+              "id": "b1017831-2b02-5cfb-9fd6-d259f22b1468",
               "name": "trial_token",
               "value": "",
               "type": "string"
             },
             {
-              "id": "s2",
+              "id": "8db2bd33-f90a-5a29-bf68-4c1b756f512a",
               "name": "domains",
               "value": "linear.app, stripe.com, shopify.com",
               "type": "string"
             },
             {
-              "id": "s3",
-              "name": "min_open_roles_or_ads",
-              "value": 1,
+              "id": "99d5b281-0db2-58d0-a5e1-858ed2375f2b",
+              "name": "min_intent_score",
+              "value": 30,
               "type": "number"
             }
           ]
         },
         "options": {}
-      },
-      "id": "sniper-node-02",
-      "name": "Settings",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        200,
-        420
-      ],
-      "notes": "Demo domains (linear.app, stripe.com, shopify.com, example.com) are 100% free. Other domains share 5 free calls/day/IP or use X-Trial-Token."
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const list = String($input.first().json.domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
-      },
-      "id": "sniper-node-03",
+      "id": "d40a4c36-b103-57e1-87d9-dd53e4ac299e",
       "name": "Split Domains",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        400,
-        420
-      ]
+        720,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const domains=String($('Settings').first().json.domains || '').split(/[,;\\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean); if(!domains.length || domains.length>50) throw new Error('Supply1–50domains'); return [...new Set(domains)].map(domain=>({json:{domain}}));"
+      }
     },
     {
+      "id": "cdb98d50-0b94-57d1-bd12-38d9fe1b0e89",
+      "name": "Hiring Intent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/company-intent",
@@ -134,41 +93,55 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n zero-waste outbound sniper: step 1 hiring intent"
+              "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
           "batching": {
             "batch": {
               "batchSize": 1,
-              "batchInterval": 1000
+              "batchInterval": 1100
             }
           },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "sniper-node-04",
-      "name": "1. Check Hiring Intent (/v1/company-intent)",
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
+    },
+    {
+      "id": "d538c702-2dc2-5ac5-ac89-c19244f91e96",
+      "name": "Hiring Intent - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "0ff17556-4861-569e-aed0-de3c07bd9a0d",
+      "name": "Google Ads",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        620,
-        420
-      ]
-    },
-    {
+        1440,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/google-ads",
@@ -177,54 +150,68 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n zero-waste outbound sniper: step 2 google ads"
+              "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
           "batching": {
             "batch": {
               "batchSize": 1,
-              "batchInterval": 1000
+              "batchInterval": 1100
             }
           },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "sniper-node-05",
-      "name": "2. Check Active Google Ads (/v1/google-ads)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        840,
-        420
-      ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const intents = $('1. Check Hiring Intent (/v1/company-intent)').all();\nconst adsList = $input.all();\nconst qualified = [];\nfor (let i = 0; i < adsList.length; i++) {\n  const intent = (intents[i] && intents[i].json) || {};\n  const ads = (adsList[i] && adsList[i].json) || {};\n  const domain = ads.domain || intent.domain;\n  const openRoles = Number(intent.total_open_roles || 0);\n  const adsReturned = Number(ads.ads_returned || 0);\n  const intentScore = Number(intent.intent_score || 0);\n  if (openRoles > 0 || adsReturned > 0 || intentScore >= 30) {\n    qualified.push({\n      json: {\n        domain,\n        intent_score: intentScore,\n        open_roles: openRoles,\n        hiring_status: intent.hiring_status || 'unknown',\n        active_google_ads: adsReturned,\n        top_functions: (intent.top_functions || []).join(', ')\n      }\n    });\n  }\n}\nreturn qualified;"
-      },
-      "id": "sniper-node-06",
-      "name": "Filter Only Active Buyers (Drop Dead Leads)",
+      "id": "d570c199-4a29-5f1a-8114-d0e092cbfaaa",
+      "name": "Google Ads - Check response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1060,
-        420
-      ]
+        1680,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
     },
     {
+      "id": "1708c992-093a-5448-9f60-f159905874a9",
+      "name": "Select Active Buyers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const intents=new Map($('Hiring Intent - Check response').all().map(x=>[x.json.domain,x.json])); const threshold=Number($('Settings').first().json.min_intent_score ??30);return $input.all().flatMap(x=>{const ads=x.json;const intent=intents.get(ads.domain)||{};const jobs=Number(intent.total_open_roles||0);const active=Number(ads.ads_returned||0);if(jobs>0||active>0||Number(intent.intent_score||0)>=threshold)return [{json:{domain:ads.domain,intent,ads}}];return [];});"
+      }
+    },
+    {
+      "id": "789f3110-1843-5b79-8e10-a283d8da393d",
+      "name": "Tech Stack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/tech-stack",
@@ -233,31 +220,55 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "sniper-node-07",
-      "name": "3. Detect Tech Stack (/v1/tech-stack)",
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
+    },
+    {
+      "id": "1d0edd0e-b919-5d8e-94d5-b05fe457c092",
+      "name": "Tech Stack - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "348060d1-fd19-5d8d-9e51-48e44ec735ce",
+      "name": "Public Contacts",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        340
-      ]
-    },
-    {
+        2640,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/extract-contacts",
@@ -266,42 +277,58 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "sniper-node-08",
-      "name": "4. Extract Contacts & MX (/v1/extract-contacts)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1500,
-        340
-      ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const buyers = $('Filter Only Active Buyers (Drop Dead Leads)').all();\nconst techs = $('3. Detect Tech Stack (/v1/tech-stack)').all();\nconst contacts = $input.all();\nconst out = [];\nfor (let i = 0; i < contacts.length; i++) {\n  const b = (buyers[i] && buyers[i].json) || {};\n  const t = (techs[i] && techs[i].json) || {};\n  const c = (contacts[i] && contacts[i].json) || {};\n  out.push({\n    json: {\n      domain: c.domain || b.domain,\n      intent_score: b.intent_score,\n      open_roles: b.open_roles,\n      active_google_ads: b.active_google_ads,\n      ad_pixels: (t.ad_pixels || []).join(', '),\n      analytics_and_crm: (t.analytics || []).concat(t.marketing_tools || []).join(', '),\n      email_deliverable_mx: Boolean(c.email_deliverable),\n      inferred_email_pattern: c.inferred_email_pattern || null,\n      published_emails: (c.emails || []).join(', '),\n      social_links: (c.social_links || []).join(', '),\n      total_api_cost_usd: '$0.035 (or $0.00 on sandbox/free tier)'\n    }\n  });\n}\nreturn out;"
-      },
-      "id": "sniper-node-09",
-      "name": "Ready-to-Send Outbound Lead Sheet",
+      "id": "7e3da18e-1a24-584e-95f5-1e6f665d1aa3",
+      "name": "Public Contacts - Check response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1720,
-        340
-      ]
+        2880,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "e62d9b5d-1694-5847-9fce-fe111a71e5cd",
+      "name": "Lead Research Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const selected=new Map($('Select Active Buyers').all().map(x=>[x.json.domain,x.json]));const tech=new Map($('Tech Stack - Check response').all().map(x=>[x.json.domain,x.json]));return $input.all().map(x=>({json:{domain:x.json.domain,hiring:selected.get(x.json.domain)?.intent,google_ads:selected.get(x.json.domain)?.ads,tech_stack:tech.get(x.json.domain),public_contacts:x.json,note:'Published contacts, not verified decision makers. No outreach has been sent.'}}));"
+      }
     }
   ],
   "connections": {
@@ -331,62 +358,106 @@
       "main": [
         [
           {
-            "node": "1. Check Hiring Intent (/v1/company-intent)",
+            "node": "Hiring Intent",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. Check Hiring Intent (/v1/company-intent)": {
+    "Hiring Intent": {
       "main": [
         [
           {
-            "node": "2. Check Active Google Ads (/v1/google-ads)",
+            "node": "Hiring Intent - Check response",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Check Active Google Ads (/v1/google-ads)": {
+    "Hiring Intent - Check response": {
       "main": [
         [
           {
-            "node": "Filter Only Active Buyers (Drop Dead Leads)",
+            "node": "Google Ads",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Filter Only Active Buyers (Drop Dead Leads)": {
+    "Google Ads": {
       "main": [
         [
           {
-            "node": "3. Detect Tech Stack (/v1/tech-stack)",
+            "node": "Google Ads - Check response",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "3. Detect Tech Stack (/v1/tech-stack)": {
+    "Google Ads - Check response": {
       "main": [
         [
           {
-            "node": "4. Extract Contacts & MX (/v1/extract-contacts)",
+            "node": "Select Active Buyers",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "4. Extract Contacts & MX (/v1/extract-contacts)": {
+    "Select Active Buyers": {
       "main": [
         [
           {
-            "node": "Ready-to-Send Outbound Lead Sheet",
+            "node": "Tech Stack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tech Stack": {
+      "main": [
+        [
+          {
+            "node": "Tech Stack - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tech Stack - Check response": {
+      "main": [
+        [
+          {
+            "node": "Public Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Public Contacts": {
+      "main": [
+        [
+          {
+            "node": "Public Contacts - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Public Contacts - Check response": {
+      "main": [
+        [
+          {
+            "node": "Lead Research Results",
             "type": "main",
             "index": 0
           }
@@ -395,11 +466,16 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
+    "hirepulseSourceCommit": "9bff417",
+    "hirepulseReviewed": true,
+    "automaticPayments": false
   },
   "tags": []
 }

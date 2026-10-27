@@ -1,124 +1,181 @@
 {
-  "name": "HirePulse Super-Tool #4 – Stealth VC Due Diligence & Instant Vendor Risk X-Ray",
+  "name": "HirePulse Stealth VC and Vendor X-Ray",
+  "active": false,
   "nodes": [
     {
-      "parameters": {
-        "content": "## 🕵️‍♂️ Super-Tool #4: Stealth VC Due Diligence & Instant Vendor Risk X-Ray\nReplaces $20,000/yr vendor risk platforms (UpGuard / SecurityScorecard) and prevents target domain metadata leaks during sensitive VC/M&A research:\n1. **Operating Footprint Verification (`/v1/company-footprint`, $0.03)**: Verifies real-world operating evidence (active analytics/ad tags, live job boards, and Google Ads transparency records).\n2. **ATS Department & Role Velocity (`/v1/ats-jobs`, $0.01)**: Audits live engineering vs. sales headcount expansion and published salary bands.\n3. **Vendor Stability & Blind Proxy Support (`/v1/vendor-health`, $0.10 / `/v1/private-query`, $0.02–$0.04)**: Evaluates B2B vendor procurement stability and supports blind proxy execution so target domains are stripped from x402 facilitator metadata.",
-        "height": 210,
-        "width": 1220,
-        "color": 6
-      },
-      "id": "sticky-header-xray",
-      "name": "Workflow Overview Note",
+      "id": "3b95a869-2542-57b7-a326-fafcdd017849",
+      "name": "Read Me",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        20
-      ]
-    },
-    {
+        300
+      ],
       "parameters": {
-        "content": "### 1. Target Vendors / Portfolio Companies\nEnter domains in Settings.\nFree sandbox domains: `linear.app`, `stripe.com`, `shopify.com`, `example.com`.",
-        "height": 120,
-        "width": 360,
-        "color": 4
-      },
-      "id": "sticky-stage-1-xray",
-      "name": "Stage 1 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        260
-      ]
+        "content": "Direct research stages: company footprint($0.03), vendor health($0.10), ATS jobs($0.01). Optional private tech lookup($0.02 single) is disabled by default; Trial/Sandbox do not cover it. It hides the target from facilitator metadata only. The later direct calls remain visible to their facilitators. Select only evidence needed; checks overlap. Public estimates are not financial forecasts or credit ratings.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
+        "height": 300,
+        "width": 1100
+      }
     },
     {
-      "parameters": {
-        "content": "### 2. Multi-Signal Operating Evidence\nCross-checks `/v1/company-footprint` and `/v1/ats-jobs` for live engineering/compliance hiring and email DNS posture.",
-        "height": 120,
-        "width": 420,
-        "color": 5
-      },
-      "id": "sticky-stage-2-xray",
-      "name": "Stage 2 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        400,
-        260
-      ]
-    },
-    {
-      "parameters": {
-        "content": "### 3. Due Diligence Dossier Output\nProduces a structured procurement & VC diligence scorecard with verified operational signals.",
-        "height": 120,
-        "width": 380,
-        "color": 7
-      },
-      "id": "sticky-stage-3-xray",
-      "name": "Stage 3 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        860,
-        260
-      ]
-    },
-    {
-      "parameters": {},
-      "id": "xray-node-01",
+      "id": "c6f99218-3d61-5000-8108-9992d537554b",
       "name": "Start",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        420
-      ]
+        240,
+        300
+      ],
+      "parameters": {}
     },
     {
+      "id": "7518db87-2186-5c5d-b9f6-64cb55242d2f",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        300
+      ],
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "x1",
+              "id": "f7636e39-70c0-5e37-be72-020295fe30fc",
               "name": "trial_token",
               "value": "",
               "type": "string"
             },
             {
-              "id": "x2",
+              "id": "cd11b729-ebeb-5669-b359-3bbdcb7bb883",
               "name": "vendor_domains",
               "value": "linear.app, stripe.com, shopify.com",
               "type": "string"
+            },
+            {
+              "id": "1fa9c622-ac04-5b1e-9403-467f2d303c04",
+              "name": "enable_private_lookup",
+              "value": false,
+              "type": "boolean"
             }
           ]
         },
         "options": {}
-      },
-      "id": "xray-node-02",
-      "name": "Settings",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        200,
-        420
-      ]
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const list = String($input.first().json.vendor_domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
-      },
-      "id": "xray-node-03",
-      "name": "Split Vendor Domains",
+      "id": "57840ca8-87b6-5298-aa1d-767aa57b91f5",
+      "name": "Split Domains",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        400,
-        420
-      ]
+        720,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const domains=String($('Settings').first().json.vendor_domains || '').split(/[,;\\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean); if(!domains.length || domains.length>50) throw new Error('Supply1–50domains'); return [...new Set(domains)].map(domain=>({json:{domain}}));"
+      }
     },
     {
+      "id": "286b214c-a412-585b-8d2d-efe6875e4d70",
+      "name": "Optional Private Lookup",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "Optional Private Lookup",
+              "leftValue": "={{ $('Settings').first().json.enable_private_lookup }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ce4384ca-04f3-56c1-8603-aca8574fae3d",
+      "name": "Private Tech Lookup",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/private-query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({tool:\"tech_stack\",target:$json.domain}) }}"
+      }
+    },
+    {
+      "id": "71295790-3005-523b-a209-251dd0584fe0",
+      "name": "Private Tech Lookup - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "aa41983d-2bf3-54a5-aee3-df3542ae0025",
+      "name": "Company Footprint",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/company-footprint",
@@ -127,35 +184,112 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n vendor xray: operating footprint check"
+              "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "xray-node-04",
-      "name": "1. Operating Footprint Check (/v1/company-footprint)",
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
+    },
+    {
+      "id": "d721cd46-6488-51ff-9be0-7f79dd052454",
+      "name": "Company Footprint - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "01558034-c821-5e5b-96bc-12c472f6a1e7",
+      "name": "Vendor Health",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        640,
-        420
-      ]
+        2160,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/vendor-health",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({vendor_domain:$json.domain}) }}"
+      }
     },
     {
+      "id": "6c9e22cf-a965-52ec-900e-742128a20c76",
+      "name": "Vendor Health - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "0ef4373f-5501-5782-bdb8-0baec360466b",
+      "name": "Open Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/ats-jobs",
@@ -164,46 +298,58 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n vendor xray: ats department breakdown"
+              "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "xray-node-05",
-      "name": "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        900,
-        420
-      ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const footprints = $('1. Operating Footprint Check (/v1/company-footprint)').all();\nconst jobsList = $input.all();\nconst dossiers = [];\nfor (let i = 0; i < jobsList.length; i++) {\n  const f = (footprints[i] && footprints[i].json) || {};\n  const j = (jobsList[i] && jobsList[i].json) || {};\n  const fp = f.footprint || {};\n  const tech = f.tech_stack || {};\n  const intent = f.hiring_intent || {};\n  dossiers.push({\n    json: {\n      domain: f.domain || j.domain,\n      sections_with_verified_data: (f.sections_with_data || []).join(', '),\n      website_tags_status: fp.website_ad_or_analytics_tags || 'unknown',\n      active_job_board: fp.job_board_with_open_roles || 'unknown',\n      active_google_ads: fp.google_ads_transparency_records || 'unknown',\n      ats_provider: j.ats_provider || intent.ats_provider || null,\n      total_open_roles: j.total_jobs ?? intent.total_open_roles ?? 0,\n      hiring_velocity_status: intent.hiring_status || 'unknown',\n      hosting_and_cdn: (tech.hosting_cdn || []).join(', '),\n      diligence_summary: `Verified sections: ${(f.sections_with_data || []).length}/3. Open roles: ${j.total_jobs ?? intent.total_open_roles ?? 0}.`\n    }\n  });\n}\nreturn dossiers;"
-      },
-      "id": "xray-node-06",
-      "name": "Compile Due Diligence & Vendor X-Ray Dossier",
+      "id": "12625c7e-7d80-57e4-a837-5d423b086804",
+      "name": "Open Jobs - Check response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1160,
-        420
-      ]
+        2880,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "e922c1f3-8369-565c-939c-a1a21013d2fc",
+      "name": "Vendor Research Dossier",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const footprint=new Map($('Company Footprint - Check response').all().map(x=>[x.json.domain,x.json]));const vendors=new Map($('Vendor Health - Check response').all().map(x=>[x.json.domain,x.json]));return $input.all().map(x=>({json:{domain:x.json.domain,operating_footprint:footprint.get(x.json.domain),vendor_health:vendors.get(x.json.domain),jobs:x.json,private_lookup_enabled:$('Settings').first().json.enable_private_lookup,note:'Private mode applies only to the optional private request. No guarantees of anonymity, solvency or financial performance.'}}));"
+      }
     }
   ],
   "connections": {
@@ -222,40 +368,124 @@
       "main": [
         [
           {
-            "node": "Split Vendor Domains",
+            "node": "Split Domains",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Vendor Domains": {
+    "Split Domains": {
       "main": [
         [
           {
-            "node": "1. Operating Footprint Check (/v1/company-footprint)",
+            "node": "Optional Private Lookup",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. Operating Footprint Check (/v1/company-footprint)": {
+    "Optional Private Lookup": {
       "main": [
         [
           {
-            "node": "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)",
+            "node": "Private Tech Lookup",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Company Footprint",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Live ATS Jobs & Headcount Breakdown (/v1/ats-jobs)": {
+    "Private Tech Lookup": {
       "main": [
         [
           {
-            "node": "Compile Due Diligence & Vendor X-Ray Dossier",
+            "node": "Private Tech Lookup - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Private Tech Lookup - Check response": {
+      "main": [
+        [
+          {
+            "node": "Company Footprint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Footprint": {
+      "main": [
+        [
+          {
+            "node": "Company Footprint - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Footprint - Check response": {
+      "main": [
+        [
+          {
+            "node": "Vendor Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vendor Health": {
+      "main": [
+        [
+          {
+            "node": "Vendor Health - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vendor Health - Check response": {
+      "main": [
+        [
+          {
+            "node": "Open Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Open Jobs": {
+      "main": [
+        [
+          {
+            "node": "Open Jobs - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Open Jobs - Check response": {
+      "main": [
+        [
+          {
+            "node": "Vendor Research Dossier",
             "type": "main",
             "index": 0
           }
@@ -264,11 +494,16 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
+    "hirepulseSourceCommit": "9bff417",
+    "hirepulseReviewed": true,
+    "automaticPayments": false
   },
   "tags": []
 }

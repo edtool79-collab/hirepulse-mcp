@@ -1,124 +1,90 @@
 {
-  "name": "HirePulse Super-Tool #2 – E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit",
+  "name": "HirePulse E-Commerce UCP ACP Readiness Kit",
+  "active": false,
   "nodes": [
     {
-      "parameters": {
-        "content": "## 🛍️ Super-Tool #2: E-Commerce UCP/ACP Agentic Readiness & Conversion Leak Kit\nBuilt for Shopify & E-Commerce agencies pitching **Universal Commerce Protocol (UCP)** and **Agentic Commerce Protocol (ACP)** readiness upgrades:\n1. **Store Readiness Audit (`/v1/store-readiness`, $0.01)**: Checks `/.well-known/ucp`, `/.well-known/acp/config.json`, JSON-LD product schema, AI shopping-bot access (`robots.txt`), and payment hints.\n2. **Conversion Leak Lead Finder (`/v1/conversion-leads`, $0.05)**: Verifies whether the store is actively spending on Google Ads while leaking AI agent traffic, and extracts public store contacts.\n3. **Competitor Shelf Comparison (`/v1/schema-comparator`, $0.02)**: Benchmarks structured product schema against competitor stores.",
-        "height": 210,
-        "width": 1220,
-        "color": 6
-      },
-      "id": "sticky-header-ucp",
-      "name": "Workflow Overview Note",
+      "id": "a8d44990-262d-5c5e-930f-5ed32807cf61",
+      "name": "Read Me",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         0,
-        20
-      ]
-    },
-    {
+        300
+      ],
       "parameters": {
-        "content": "### 1. Target E-Commerce Stores\nEnter store domains in Settings.\nFree sandbox domain: `shopify.com`, `example.com`.",
-        "height": 120,
-        "width": 360,
-        "color": 4
-      },
-      "id": "sticky-stage-1-ucp",
-      "name": "Stage 1 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        260
-      ]
+        "content": "Three implemented stages: store readiness($0.01), conversion-lead evidence($0.05), competitor schema comparison($0.02). UCP=Universal Commerce Protocol; ACP=Agentic Commerce Protocol. Heuristic findings do not certify compliance or measure actual lost revenue.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
+        "height": 300,
+        "width": 1100
+      }
     },
     {
-      "parameters": {
-        "content": "### 2. UCP/ACP Protocol & Conversion Leak Scan\nAudits `/.well-known/ucp`, `/.well-known/acp/config.json`, JSON-LD schema gaps, and active ad spend.",
-        "height": 120,
-        "width": 420,
-        "color": 5
-      },
-      "id": "sticky-stage-2-ucp",
-      "name": "Stage 2 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        400,
-        260
-      ]
-    },
-    {
-      "parameters": {
-        "content": "### 3. Auto-Generated Agency Audit Pitch\nOutputs exact UCP/ACP missing files, readiness score (0-100), ad spend evidence, and public store contacts.",
-        "height": 120,
-        "width": 380,
-        "color": 7
-      },
-      "id": "sticky-stage-3-ucp",
-      "name": "Stage 3 Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        860,
-        260
-      ]
-    },
-    {
-      "parameters": {},
-      "id": "ucp-node-01",
+      "id": "cdf55645-afe6-5e39-9719-1cc9db1c44cb",
       "name": "Start",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        420
-      ]
+        240,
+        300
+      ],
+      "parameters": {}
     },
     {
+      "id": "5dab34a1-9086-5f46-be03-092816405fe2",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        300
+      ],
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "u1",
+              "id": "9ca3fdfd-5a40-5c4f-8e66-b4d773d76421",
               "name": "trial_token",
               "value": "",
               "type": "string"
             },
             {
-              "id": "u2",
+              "id": "ddcdd8e3-a1fe-5f7a-8849-258563c2c4d6",
               "name": "store_domains",
               "value": "shopify.com, example.com",
+              "type": "string"
+            },
+            {
+              "id": "056d837a-1faa-5e6f-ba8c-c4762705051a",
+              "name": "competitor_domains",
+              "value": "linear.app, stripe.com",
               "type": "string"
             }
           ]
         },
         "options": {}
-      },
-      "id": "ucp-node-02",
-      "name": "Settings",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        200,
-        420
-      ]
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const list = String($input.first().json.store_domains || '').replace(/[,;]/g, ' ').split(' ').map(d => d.trim().toLowerCase()).filter(Boolean);\nreturn [...new Set(list)].map(domain => ({ json: { domain } }));"
-      },
-      "id": "ucp-node-03",
-      "name": "Split Store Domains",
+      "id": "a99ba5b1-2968-55f2-9511-d44cde4465c0",
+      "name": "Split Domains",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        400,
-        420
-      ]
+        720,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const domains=String($('Settings').first().json.store_domains || '').split(/[,;\\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean); if(!domains.length || domains.length>50) throw new Error('Supply1–50domains'); return [...new Set(domains)].map(domain=>({json:{domain}}));"
+      }
     },
     {
+      "id": "a8484678-eb1c-5ca6-90fa-5cda7e985865",
+      "name": "Store Readiness",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/store-readiness",
@@ -127,35 +93,55 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n ucp acp agency kit: store readiness audit"
+              "value": "n8n HirePulse recipe: HirePulse E-Commerce UCP ACP Readiness Kit"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "ucp-node-04",
-      "name": "1. UCP/ACP Store Readiness Audit (/v1/store-readiness)",
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
+    },
+    {
+      "id": "c4344c04-c289-5122-b0be-487fc9637bc3",
+      "name": "Store Readiness - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "5bfc7d41-3aad-5cea-b708-f95df0aac6d8",
+      "name": "Conversion Evidence",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        640,
-        420
-      ]
-    },
-    {
+        1440,
+        300
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://gethirepulse.xyz/v1/conversion-leads",
@@ -164,46 +150,128 @@
           "parameters": [
             {
               "name": "X-Trial-Token",
-              "value": "={{ $('Settings').first().json.trial_token }}"
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
               "name": "X-Agent-Context",
-              "value": "n8n ucp acp agency kit: conversion leak lead qualification"
+              "value": "n8n HirePulse recipe: HirePulse E-Commerce UCP ACP Readiness Kit"
             }
           ]
         },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ domain: $json.domain }) }}",
         "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
           "response": {
             "response": {
+              "fullResponse": true,
               "neverError": true
             }
           }
-        }
-      },
-      "id": "ucp-node-05",
-      "name": "2. Qualify Conversion Leak & Contacts (/v1/conversion-leads)",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        900,
-        420
-      ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}"
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const audits = $('1. UCP/ACP Store Readiness Audit (/v1/store-readiness)').all();\nconst leads = $input.all();\nconst reports = [];\nfor (let i = 0; i < leads.length; i++) {\n  const a = (audits[i] && audits[i].json) || {};\n  const l = (leads[i] && leads[i].json) || {};\n  const disc = a.discovery || {};\n  const ucpValid = Boolean(disc['/.well-known/ucp'] && disc['/.well-known/ucp'].valid);\n  const acpValid = Boolean(disc['/.well-known/acp/config.json'] && disc['/.well-known/acp/config.json'].valid);\n  const contacts = l.public_contacts || {};\n  reports.push({\n    json: {\n      domain: a.domain || l.domain,\n      readiness_score: a.readiness_score ?? 0,\n      ucp_endpoint_valid: ucpValid,\n      acp_endpoint_valid: acpValid,\n      active_ad_spend_verified: Boolean(l.active_ad_spend_verified),\n      recommended_fixes: (a.fixes || []).join(' | '),\n      emails: (contacts.emails || []).join(', '),\n      social_links: (contacts.social_links || []).join(', '),\n      agency_pitch_hook: `Your store (${a.domain || l.domain}) scores ${a.readiness_score ?? 0}/100 on AI Shopping Agent Readiness (UCP: ${ucpValid ? 'OK' : 'MISSING'}, ACP: ${acpValid ? 'OK' : 'MISSING'}). Top fixes: ${(a.fixes || []).slice(0, 2).join('; ')}`\n    }\n  });\n}\nreturn reports;"
-      },
-      "id": "ucp-node-06",
-      "name": "Generate Client UCP/ACP Audit Report",
+      "id": "d865738d-33bc-54a4-b8f7-a8d37988edc0",
+      "name": "Conversion Evidence - Check response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1160,
-        420
-      ]
+        1680,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "750bc8aa-bb6b-53e7-9aff-ed7fc86cec7f",
+      "name": "Comparison Inputs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const peers=String($('Settings').first().json.competitor_domains||'').split(/[,;\\s]+/).filter(Boolean);return $input.all().map(x=>{const competitor_domains=[...new Set(peers)].filter(d=>d!==x.json.domain);if(!competitor_domains.length||competitor_domains.length>3)throw new Error('Supply1–3competitors different from the target.');return {json:{domain:x.json.domain,competitor_domains}};});"
+      }
+    },
+    {
+      "id": "9be59c87-a9ad-5934-a0fc-86349367cb66",
+      "name": "Competitor Comparison",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        300
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://gethirepulse.xyz/v1/schema-comparator",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Trial-Token",
+              "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-Agent-Context",
+              "value": "n8n HirePulse recipe: HirePulse E-Commerce UCP ACP Readiness Kit"
+            }
+          ]
+        },
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1100
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain,competitor_domains:$json.competitor_domains}) }}"
+      }
+    },
+    {
+      "id": "3e792117-356b-5292-bfd3-c490efd50da5",
+      "name": "Competitor Comparison - Check response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => { const wrapped=item.json; const status=Number(wrapped.statusCode ?? 200); const body=wrapped.body ?? wrapped; if(status>=400 || (body && typeof body.status==='number' && body.status>=400)) throw new Error('HirePulse HTTP '+status+': '+(body.code || body.detail || 'Request failed')+'. Stop here; review quota, input or x402 payment requirements. No payment was signed by this workflow.'); return {json:body}; });"
+      }
+    },
+    {
+      "id": "a691c519-96a1-5bc9-bf1f-c575d2dacc58",
+      "name": "Commerce Research Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2640,
+        300
+      ],
+      "parameters": {
+        "jsCode": "const readiness=new Map($('Store Readiness - Check response').all().map(x=>[x.json.domain,x.json]));const leads=new Map($('Conversion Evidence - Check response').all().map(x=>[x.json.domain,x.json]));return $input.all().map(x=>({json:{domain:x.json.domain,readiness:readiness.get(x.json.domain),lead_evidence:leads.get(x.json.domain),comparison:x.json,note:'Evidence only; unknown is not false, and no fixes or outreach were executed.'}}));"
+      }
     }
   ],
   "connections": {
@@ -222,40 +290,95 @@
       "main": [
         [
           {
-            "node": "Split Store Domains",
+            "node": "Split Domains",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Store Domains": {
+    "Split Domains": {
       "main": [
         [
           {
-            "node": "1. UCP/ACP Store Readiness Audit (/v1/store-readiness)",
+            "node": "Store Readiness",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "1. UCP/ACP Store Readiness Audit (/v1/store-readiness)": {
+    "Store Readiness": {
       "main": [
         [
           {
-            "node": "2. Qualify Conversion Leak & Contacts (/v1/conversion-leads)",
+            "node": "Store Readiness - Check response",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "2. Qualify Conversion Leak & Contacts (/v1/conversion-leads)": {
+    "Store Readiness - Check response": {
       "main": [
         [
           {
-            "node": "Generate Client UCP/ACP Audit Report",
+            "node": "Conversion Evidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversion Evidence": {
+      "main": [
+        [
+          {
+            "node": "Conversion Evidence - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversion Evidence - Check response": {
+      "main": [
+        [
+          {
+            "node": "Comparison Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Comparison Inputs": {
+      "main": [
+        [
+          {
+            "node": "Competitor Comparison",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Competitor Comparison": {
+      "main": [
+        [
+          {
+            "node": "Competitor Comparison - Check response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Competitor Comparison - Check response": {
+      "main": [
+        [
+          {
+            "node": "Commerce Research Report",
             "type": "main",
             "index": 0
           }
@@ -264,11 +387,16 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
+    "hirepulseSourceCommit": "9bff417",
+    "hirepulseReviewed": true,
+    "automaticPayments": false
   },
   "tags": []
 }
