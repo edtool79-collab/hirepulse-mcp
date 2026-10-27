@@ -1,0 +1,32 @@
+{
+  "domain": "example.com",
+  "status": "ok",
+  "sections_status": {
+    "tech_stack": "ok",
+    "hiring_intent": "not_found",
+    "google_ads": "ok",
+    "contacts": "no_data"
+  },
+  "sections_with_data": [
+    "tech_stack",
+    "google_ads"
+  ],
+  "signals": [
+    "Runs Google Ads: 40 ads in the sample, Google estimate 1000-2000 ads.",
+    "No ad pixels detected on the home page."
+  ],
+  "breakout_summary": {
+    "signal": "weak",
+    "score": 30,
+    "reasons": [
+      "Active Google Ads: 40 ads in the sample (+30).",
+      "Site maturity: 0 ad/analytics tools, 1 technologies (+0)."
+    ],
+    "method": "score = half of the hiring intent_score (max 50) + Google Ads activity (max 30) + site ad/analytics maturity (max 20). strong >= 70, moderate >= 45, weak >= 20. Estimate from public signals only; not investment advice."
+  },
+  "sandbox": {
+    "demo_domain": true,
+    "note": "Demo domain: free, not counted against the 5 free daily calls, and may be cached for the day. Demo domains: example.com, linear.app, stripe.com, shopify.com, vercel.com."
+  },
+  "checked_at": "2026-10-27T02:44:38.868Z"
+}
