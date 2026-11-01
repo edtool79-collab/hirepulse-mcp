@@ -9,7 +9,7 @@ import { ListToolsRequestSchema, CallToolRequestSchema,
   GetPromptRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 
 // SDK handles negotiation, sessions and SSE. Payment challenges pass through.
-const remote = new Client({ name: 'hirepulse-mcp-proxy', version: '1.0.0' });
+const remote = new Client({ name: 'hirepulse-mcp-proxy', version: '1.0.1' });
 let server;
 let closing = false;
 async function close() {
@@ -20,7 +20,7 @@ async function close() {
 try {
   await remote.connect(new StreamableHTTPClientTransport(new URL('https://gethirepulse.xyz/mcp')));
   const caps = remote.getServerCapabilities() ?? {};
-  server = new Server({ name: 'hirepulse-mcp', version: '1.0.0' }, {
+  server = new Server({ name: 'hirepulse-mcp', version: '1.0.1' }, {
     capabilities: {
       ...(caps.tools ? { tools: {} } : {}),
       ...(caps.resources ? { resources: {} } : {}),

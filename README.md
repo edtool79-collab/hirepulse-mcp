@@ -2,9 +2,9 @@
 
 Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts. Includes open-source **n8n Turnkey Super-Tool Workflows** (`templates/`).
 
-[Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 8-tool B2B profile, try a labeled free demo, then research a real domain.
+[Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 9-tool B2B profile, try a labeled free demo, then research a real domain.
 
-## Start with remote MCP: 8 focused B2B tools
+## Start with remote MCP: 9 focused B2B tools
 
 No npm package is needed for clients that support remote HTTP MCP:
 
@@ -39,20 +39,20 @@ Clients requiring stdio can bridge the remote endpoint:
 
 ## npm: local stdio proxy
 
-[`hirepulse-mcp@1.0.0`](https://www.npmjs.com/package/hirepulse-mcp) is published and verified against all 26 live tools, including `claim_free_trial`. Requires Node.js 20+.
+[`hirepulse-mcp`](https://www.npmjs.com/package/hirepulse-mcp) forwards the current 27-tool gateway, including `watch_company_jobs` and `claim_free_trial`. Requires Node.js 20+. Tool inventory comes from the live server; it is not bundled in the package.
 
 ```json
 {
   "mcpServers": {
     "hirepulse": {
       "command": "npx",
-      "args": ["-y", "hirepulse-mcp@1.0.0"]
+      "args": ["-y", "hirepulse-mcp"]
     }
   }
 }
 ```
 
-The npm proxy exposes the full 26-tool gateway. For a focused 8-tool or 11-tool setup, use the remote profiles above. Source development: `npm ci`, `npm run build`, `npm test`.
+The npm proxy exposes the full 27-tool gateway. For a focused 9-tool or 11-tool setup, use the remote profiles above. Source development: `npm ci`, `npm run build`, `npm test`.
 
 ## Try a company profile without a wallet
 
@@ -71,7 +71,7 @@ For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligib
 ## Commerce and the complete catalog
 
 - Commerce research: `https://gethirepulse.xyz/mcp?profile=commerce&ref=github` (11 tools).
-- Complete v12 catalog: `https://gethirepulse.xyz/mcp?ref=github` (26 tools; existing clients remain supported).
+- Full live catalog: `https://gethirepulse.xyz/mcp?ref=github` (27 tools; existing clients remain supported).
 - Versioned machine-readable configurations: [B2B](mcp-b2b.json), [Commerce](mcp-commerce.json), and [complete catalog](mcp.json).
 
 ## Proxy behavior and pricing
@@ -84,7 +84,7 @@ than maintained in a second copy. Every input parameter has a description.
 Tools cover website technology,
 public job boards, hiring signals, Google Ads transparency, company profiles,
 contacts, web-to-Markdown, merchant screening and commerce evidence.
-Five successful free calls per UTC day per IP are shared across tools.
+Ten successful free calls per UTC day per agent are shared across supported tools. Send a stable X-HirePulse-Client-Id; a separate network ceiling applies across agents sharing an IP. See /quickstart for current identity and quota rules.
 Batch and hot-buyer scans have separate limits and a two-step quote flow.
 Empty results are not charged. Paid results use x402, USDC on Base:
 see the live catalog for each price; hot buyers cost $0.25 per hot company.

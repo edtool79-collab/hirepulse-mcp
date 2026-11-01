@@ -1,6 +1,6 @@
 {
   "name": "hirepulse-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stdio MCP proxy for hiring signals, tech stack, company jobs, Google Ads and company research.",
   "type": "module",
   "scripts": {
