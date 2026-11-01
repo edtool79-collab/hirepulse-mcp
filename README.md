@@ -1,6 +1,6 @@
 # HirePulse company research MCP
 
-Research a company from public technology, open jobs and hiring signals, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts. Includes open-source **n8n Turnkey Super-Tool Workflows** (`templates/`).
+Company enrichment and hiring signals from a domain, plus web page to clean Markdown. Research public technology, open jobs, Google Ads and published contacts. A combined profile costs $0.03 per qualifying result and includes `breakout_summary` growth estimates. Start with a labeled free sandbox, then use a 25-call trial for real research. Growth signals are not financial forecasts. Includes open-source **n8n Turnkey Super-Tool Workflows** (`templates/`).
 
 [Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 9-tool B2B profile, try a labeled free demo, then research a real domain.
 
@@ -76,18 +76,16 @@ For real company lookups, `claim_free_trial` / `POST /v1/trial` grants an eligib
 
 ## Proxy behavior and pricing
 
-The proxy forwards the live gateway catalog: 26 canonical MCP tools in version 12
-(verified 27 October 2026). The legacy names `00_ask_hirepulse_advisor` and
+The proxy forwards the live gateway catalog: 27 MCP tools (measured on 1 November 2026 against [the live MCP endpoint](https://gethirepulse.xyz/mcp)); the focused B2B and commerce profiles expose 9 and 11 tools respectively. The [HTTP catalog](https://gethirepulse.xyz/v1/catalog) has 22 offers plus the email service. The legacy names `00_ask_hirepulse_advisor` and
 `verify_domain_legitimacy_and_security` remain callable for compatibility but
 are omitted from `tools/list`. Schemas are forwarded from the gateway rather
 than maintained in a second copy. Every input parameter has a description.
 Tools cover website technology,
 public job boards, hiring signals, Google Ads transparency, company profiles,
 contacts, web-to-Markdown, merchant screening and commerce evidence.
-Ten successful free calls per UTC day per agent are shared across supported tools. Send a stable X-HirePulse-Client-Id; a separate network ceiling applies across agents sharing an IP. See /quickstart for current identity and quota rules.
+Free daily calls follow the [current published policy](https://gethirepulse.xyz/llms.txt). Measured on 1 November 2026: 10 successful free calls per day per agent, identified by `Mcp-Session-Id`, `X-MCP-Client-Id`, `X-Client-Id` or `X-Agent-Id`, and by IP otherwise; never more than 100 per network. These limits may change; check the live policy before relying on them.
 Batch and hot-buyer scans have separate limits and a two-step quote flow.
-Empty results are not charged. Paid results use x402, USDC on Base:
-see the live catalog for each price; hot buyers cost $0.25 per hot company.
+Results whose status is not `ok` are free. Paid results use x402 v2, USDC on Base (`eip155:8453`). See the [live catalog](https://gethirepulse.xyz/v1/catalog) for per-tool prices, starting at $0.002 per result; no call exceeds $1. Quotes and multi-result flows have their own pricing.
 
 Use `pre_purchase_merchant_trust_check` for an online shop before buying goods.
 Use `x402_merchant_trust_check` instead for an x402 API before signing a crypto
@@ -119,7 +117,7 @@ when your client (such as Claude Desktop) only supports local stdio MCP servers.
 
 ## Free Sandbox Domains
 
-Calls targeting `example.com`, `linear.app`, `stripe.com`, `shopify.com`, and `vercel.com` are free on supported single-tool routes, including URL and vendor-domain inputs. Every comparator domain must also be allowlisted. `example.com` is a labeled synthetic preview; other allowlisted samples may be cached. These calls do not consume the shared5daily free calls. Private lookup, quote redemption and paid email allocation are excluded. Quote-only and reserved probe requests still return payment terms.
+Calls targeting `example.com`, `linear.app`, `stripe.com`, `shopify.com`, and `vercel.com` are free on supported single-tool routes, including URL and vendor-domain inputs. Every comparator domain must also be allowlisted. `example.com` is a labeled synthetic preview; other allowlisted samples may be cached. These calls do not consume the shared daily free allowance. Private lookup, quote redemption and paid email allocation are excluded. Quote-only and reserved probe requests still return payment terms.
 
 ## License
 
