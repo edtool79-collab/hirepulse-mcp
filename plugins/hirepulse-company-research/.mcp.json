@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hirepulse-b2b": {
+      "type": "http",
+      "url": "https://gethirepulse.xyz/mcp?profile=b2b&ref=claude-plugin"
+    }
+  }
+}

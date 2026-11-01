@@ -1,0 +1,12 @@
+{
+  "name": "hirepulse",
+  "owner": { "name": "HirePulse" },
+  "plugins": [
+    {
+      "name": "hirepulse-company-research",
+      "source": "./plugins/hirepulse-company-research",
+      "description": "Company enrichment and hiring signals from a domain: tech stack, open jobs, hiring intent, Google Ads and published contacts, plus a hiring filter for a list of companies. Pay per useful result over x402 (USDC on Base); empty results are free.",
+      "version": "1.0.0"
+    }
+  ]
+}

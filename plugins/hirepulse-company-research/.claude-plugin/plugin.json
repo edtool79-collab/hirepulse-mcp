@@ -1,0 +1,8 @@
+{
+  "name": "hirepulse-company-research",
+  "description": "Company enrichment and hiring signals from a domain, over the HirePulse B2B MCP profile.",
+  "version": "1.0.0",
+  "author": { "name": "HirePulse" },
+  "homepage": "https://gethirepulse.xyz",
+  "repository": "https://github.com/edtool79-collab/hirepulse-mcp"
+}

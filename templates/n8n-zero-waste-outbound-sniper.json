@@ -98,6 +98,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -155,6 +159,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -225,6 +233,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -282,6 +294,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },

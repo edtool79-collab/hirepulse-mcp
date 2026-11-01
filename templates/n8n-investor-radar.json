@@ -133,6 +133,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n investor radar: breakout screening"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },

@@ -132,6 +132,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -189,6 +193,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -246,6 +254,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -303,6 +315,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },

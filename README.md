@@ -4,6 +4,17 @@ Company enrichment and hiring signals from a domain, plus web page to clean Mark
 
 [Start here: research one company in three steps](docs/company-research-quickstart.md) — connect the 9-tool B2B profile, try a labeled free demo, then research a real domain.
 
+## Claude Code plugin
+
+Add HirePulse to Claude Code from this repository:
+
+```
+/plugin marketplace add edtool79-collab/hirepulse-mcp
+/plugin install hirepulse-company-research@hirepulse
+```
+
+The plugin connects the 9-tool B2B profile (`https://gethirepulse.xyz/mcp?profile=b2b`) and adds a company-research skill.
+
 ## Start with remote MCP: 9 focused B2B tools
 
 No npm package is needed for clients that support remote HTTP MCP:
@@ -83,7 +94,7 @@ than maintained in a second copy. Every input parameter has a description.
 Tools cover website technology,
 public job boards, hiring signals, Google Ads transparency, company profiles,
 contacts, web-to-Markdown, merchant screening and commerce evidence.
-Free daily calls follow the [current published policy](https://gethirepulse.xyz/llms.txt). Measured on 1 November 2026: 10 successful free calls per day per agent, identified by `Mcp-Session-Id`, `X-MCP-Client-Id`, `X-Client-Id` or `X-Agent-Id`, and by IP otherwise; never more than 100 per network. These limits may change; check the live policy before relying on them.
+Free daily calls follow the [current published policy](https://gethirepulse.xyz/llms.txt). Measured on 1 November 2026: 10 successful free calls per day per agent, identified by `Mcp-Session-Id`, `X-MCP-Client-Id`, `X-Client-Id` or `X-Agent-Id`, and by IP otherwise; never more than 100 per network. These limits may change; check the live policy before relying on them. Since 1 November 2026, free calls over plain HTTP are opt-in: an unpaid HTTP call with the header `X-HirePulse-Free: 1` uses one, and without it the call gets the x402 payment terms (HTTP 402). MCP tool calls and the sandbox domains use free calls automatically.
 Batch and hot-buyer scans have separate limits and a two-step quote flow.
 Results whose status is not `ok` are free. Paid results use x402 v2, USDC on Base (`eip155:8453`). See the [live catalog](https://gethirepulse.xyz/v1/catalog) for per-tool prices, starting at $0.002 per result; no call exceeds $1. Quotes and multi-result flows have their own pricing.
 

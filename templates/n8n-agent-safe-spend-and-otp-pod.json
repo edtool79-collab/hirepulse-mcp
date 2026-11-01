@@ -103,6 +103,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -160,6 +164,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -217,6 +225,10 @@
             {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Agent Safe-Spend Firewall and OTP Pod"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -325,6 +337,10 @@
             {
               "name": "PAYMENT-SIGNATURE",
               "value": "={{ $('Settings').first().json.inbox_payment_signature }}"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
@@ -390,6 +406,10 @@
             {
               "name": "X-Inbox-Capability",
               "value": "={{ $('Allocate Test Inbox - Check response').first().json.capability }}"
+            },
+            {
+              "name": "X-HirePulse-Free",
+              "value": "1"
             }
           ]
         },
