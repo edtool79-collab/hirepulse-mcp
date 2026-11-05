@@ -34,6 +34,8 @@ Firecrawl gets one homepage request for each selected domain and returns Markdow
 
 ## Firecrawl review
 
+On 2026-11-05, a one-domain smoke test exercised the provider calls directly with `linear.app`. ATS Job Pulse reported 31 active listings on Ashby. Firecrawl returned HTTP 200 with Markdown and the requested JSON fields, and reported 5 credits used. These are point-in-time results. The test exercised the provider payloads outside n8n, so it does not verify n8n credential binding or execution. No live 50-domain benchmark was performed.
+
 Review the homepage extraction fields and report whether a public firmographic provider from Alexandria would improve the output. The template includes a note for that extension. Choose the provider and verify its API contract, account access, and credit use before adding it to the execution path. After a shared smoke test and agreement on attribution, the workflow can be considered for the n8n template library.
 
 [Firecrawl scrape API](https://docs.firecrawl.dev/api-reference/endpoint/scrape) · [Alexandria](https://docs.firecrawl.dev/features/alexandria) · [Apify synchronous run API](https://docs.apify.com/api/v2/actor-run-sync-get-dataset-items-post) · [n8n HTTP Request node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/)
