@@ -1,0 +1,17 @@
+{
+  "kind": "proposed_live_sample",
+  "sampling_note": "Convenience sample for joint review. Domain ownership, availability, hiring labels and ATS coverage have not been checked. Freeze the list before collecting measurements. Do not infer a positive/negative split from this file.",
+  "domains": [
+    "linear.app", "notion.so", "figma.com", "miro.com", "asana.com",
+    "airtable.com", "monday.com", "clickup.com", "height.app", "basecamp.com",
+    "stripe.com", "ramp.com", "brex.com", "mercury.com", "plaid.com",
+    "vercel.com", "netlify.com", "render.com", "railway.com", "fly.io",
+    "supabase.com", "neon.tech", "planetscale.com", "cockroachlabs.com", "mongodb.com",
+    "datadoghq.com", "grafana.com", "sentry.io", "honeycomb.io", "posthog.com",
+    "cloudflare.com", "fastly.com", "tailscale.com", "ngrok.com", "hashicorp.com",
+    "segment.com", "rudderstack.com", "fivetran.com", "airbyte.com", "dbt.com",
+    "intercom.com", "front.com", "zendesk.com", "helpscout.com", "gorgias.com",
+    "workato.com", "zapier.com", "make.com", "n8n.io", "tray.ai"
+  ],
+  "observed_results": null
+}

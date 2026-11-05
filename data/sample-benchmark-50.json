@@ -1,0 +1,356 @@
+{
+  "kind": "synthetic_gate_fixture",
+  "live": false,
+  "rows": [
+    {
+      "domain": "company-01.example",
+      "company_domain": "company-01.example",
+      "total_active_jobs": 1,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-02.example",
+      "company_domain": "company-02.example",
+      "total_active_jobs": 2,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-03.example",
+      "company_domain": "company-03.example",
+      "total_active_jobs": 3,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-04.example",
+      "company_domain": "company-04.example",
+      "total_active_jobs": 4,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-05.example",
+      "company_domain": "company-05.example",
+      "total_active_jobs": 5,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-06.example",
+      "company_domain": "company-06.example",
+      "total_active_jobs": 6,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-07.example",
+      "company_domain": "company-07.example",
+      "total_active_jobs": 7,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-08.example",
+      "company_domain": "company-08.example",
+      "total_active_jobs": 8,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-09.example",
+      "company_domain": "company-09.example",
+      "total_active_jobs": 9,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-10.example",
+      "company_domain": "company-10.example",
+      "total_active_jobs": 10,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-11.example",
+      "company_domain": "company-11.example",
+      "total_active_jobs": 11,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-12.example",
+      "company_domain": "company-12.example",
+      "total_active_jobs": 12,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-13.example",
+      "company_domain": "company-13.example",
+      "total_active_jobs": 13,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-14.example",
+      "company_domain": "company-14.example",
+      "total_active_jobs": 14,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-15.example",
+      "company_domain": "company-15.example",
+      "total_active_jobs": 15,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-16.example",
+      "company_domain": "company-16.example",
+      "total_active_jobs": 16,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-17.example",
+      "company_domain": "company-17.example",
+      "total_active_jobs": 17,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-18.example",
+      "company_domain": "company-18.example",
+      "total_active_jobs": 18,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-19.example",
+      "company_domain": "company-19.example",
+      "total_active_jobs": 19,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-20.example",
+      "company_domain": "company-20.example",
+      "total_active_jobs": 20,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-21.example",
+      "company_domain": "company-21.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-22.example",
+      "company_domain": "company-22.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-23.example",
+      "company_domain": "company-23.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-24.example",
+      "company_domain": "company-24.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-25.example",
+      "company_domain": "company-25.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-26.example",
+      "company_domain": "company-26.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-27.example",
+      "company_domain": "company-27.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-28.example",
+      "company_domain": "company-28.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-29.example",
+      "company_domain": "company-29.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-30.example",
+      "company_domain": "company-30.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-31.example",
+      "company_domain": "company-31.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-32.example",
+      "company_domain": "company-32.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-33.example",
+      "company_domain": "company-33.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-34.example",
+      "company_domain": "company-34.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-35.example",
+      "company_domain": "company-35.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-36.example",
+      "company_domain": "company-36.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-37.example",
+      "company_domain": "company-37.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-38.example",
+      "company_domain": "company-38.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-39.example",
+      "company_domain": "company-39.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-40.example",
+      "company_domain": "company-40.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-41.example",
+      "company_domain": "company-41.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-42.example",
+      "company_domain": "company-42.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-43.example",
+      "company_domain": "company-43.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-44.example",
+      "company_domain": "company-44.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-45.example",
+      "company_domain": "company-45.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-46.example",
+      "company_domain": "company-46.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-47.example",
+      "company_domain": "company-47.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-48.example",
+      "company_domain": "company-48.example",
+      "total_active_jobs": 0,
+      "ats_type": "ashby",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-49.example",
+      "company_domain": "company-49.example",
+      "total_active_jobs": 0,
+      "ats_type": "greenhouse",
+      "record_type": "company_summary"
+    },
+    {
+      "domain": "company-50.example",
+      "company_domain": "company-50.example",
+      "total_active_jobs": 0,
+      "ats_type": "lever",
+      "record_type": "company_summary"
+    }
+  ]
+}
