@@ -21,6 +21,13 @@ Add this entry to `cline_mcp_settings.json` (Cline → MCP Servers → Configure
 
 Keep `"type": "streamableHttp"`. The server speaks Streamable HTTP only, and Cline falls back to the legacy SSE transport when `type` is missing, which this server does not support.
 
+Where the settings file is:
+
+- Cline 4: `~/.cline/data/settings/cline_mcp_settings.json`. On Windows that is `%USERPROFILE%\.cline\data\settings\cline_mcp_settings.json`.
+- Older Cline versions: `<VS Code user data>/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+
+Edit the file directly. Cline reloads it automatically, so the hirepulse tools appear within seconds and no restart is needed.
+
 You can also add it from the Remote Servers tab. Use the same URL and choose the Streamable HTTP transport.
 
 ## Check that it works
