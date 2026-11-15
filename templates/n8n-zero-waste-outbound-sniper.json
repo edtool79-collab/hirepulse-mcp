@@ -12,8 +12,8 @@
         300
       ],
       "parameters": {
-        "content": "Screen each candidate with hiring intent and Google Ads; enrich only selected companies. List price:$0.02 per screened company +$0.015 per selected company when all four calls have data. Discarded companies can still incur screening costs. No verified competitor-cost savings or lead conversion rate is promised. Optional batch/hot-buyers quotes are separate flows, with paid redemption and3daily scans/IP.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
-        "height": 300,
+        "content": "Screen each candidate with hiring intent and Google Ads; enrich only selected companies. List price:$0.02 per screened company +$0.015 per selected company when all four calls have data. Discarded companies can still incur screening costs. No verified competitor-cost savings or lead conversion rate is promised. Optional batch/hot-buyers quotes are separate flows, with paid redemption and 5 free daily scans/IP.\nManual trigger only. Sandbox defaults cost $0; real inputs use free daily calls, a card credit key or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.\nNo crypto wallet? Buy $10 of HirePulse credit by card at https://gethirepulse.xyz/credits and paste the license key from the email into credit_key in Settings. Each billable result deducts its price; empty results are free.",
+        "height": 360,
         "width": 1100
       }
     },
@@ -43,6 +43,12 @@
             {
               "id": "b1017831-2b02-5cfb-9fd6-d259f22b1468",
               "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "c7e1d2a4-5b6f-4c3d-9e8a-1f2b3c4d5e6f",
+              "name": "credit_key",
               "value": "",
               "type": "string"
             },
@@ -94,6 +100,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
@@ -155,6 +165,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
@@ -231,6 +245,10 @@
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
+            },
+            {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Zero-Waste Outbound Sniper"
             },
@@ -290,6 +308,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",

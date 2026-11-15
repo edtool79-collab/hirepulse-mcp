@@ -12,8 +12,8 @@
         300
       ],
       "parameters": {
-        "content": "Three implemented stages: store readiness($0.01), conversion-lead evidence($0.05), competitor schema comparison($0.02). UCP=Universal Commerce Protocol; ACP=Agentic Commerce Protocol. Heuristic findings do not certify compliance or measure actual lost revenue.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
-        "height": 300,
+        "content": "Three implemented stages: store readiness($0.01), conversion-lead evidence($0.05), competitor schema comparison($0.02). UCP=Universal Commerce Protocol; ACP=Agentic Commerce Protocol. Heuristic findings do not certify compliance or measure actual lost revenue.\nManual trigger only. Sandbox defaults cost $0; real inputs use free daily calls, a card credit key or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.\nNo crypto wallet? Buy $10 of HirePulse credit by card at https://gethirepulse.xyz/credits and paste the license key from the email into credit_key in Settings. Each billable result deducts its price; empty results are free.",
+        "height": 360,
         "width": 1100
       }
     },
@@ -43,6 +43,12 @@
             {
               "id": "9ca3fdfd-5a40-5c4f-8e66-b4d773d76421",
               "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "c7e1d2a4-5b6f-4c3d-9e8a-1f2b3c4d5e6f",
+              "name": "credit_key",
               "value": "",
               "type": "string"
             },
@@ -94,6 +100,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
@@ -155,6 +165,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
@@ -229,6 +243,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",

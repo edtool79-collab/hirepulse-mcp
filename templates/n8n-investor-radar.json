@@ -87,6 +87,12 @@
               "type": "string"
             },
             {
+              "id": "c7e1d2a4-5b6f-4c3d-9e8a-1f2b3c4d5e6f",
+              "name": "credit_key",
+              "value": "",
+              "type": "string"
+            },
+            {
               "id": "a2",
               "name": "domains",
               "value": "linear.app, stripe.com, vercel.com, ramp.com, notion.so",
@@ -129,6 +135,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",

@@ -12,8 +12,8 @@
         300
       ],
       "parameters": {
-        "content": "Direct research stages: company footprint($0.03), vendor health($0.10), ATS jobs($0.01). Optional private tech lookup($0.02 single) is disabled by default; Trial/Sandbox do not cover it. It hides the target from facilitator metadata only. The later direct calls remain visible to their facilitators. Select only evidence needed; checks overlap. Public estimates are not financial forecasts or credit ratings.\nManual trigger only. Sandbox defaults cost $0; real inputs use quota or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.",
-        "height": 300,
+        "content": "Direct research stages: company footprint($0.03), vendor health($0.10), ATS jobs($0.01). Optional private tech lookup($0.02 single) is disabled by default; Trial/Sandbox do not cover it. It hides the target from facilitator metadata only. The later direct calls remain visible to their facilitators. Select only evidence needed; checks overlap. Public estimates are not financial forecasts or credit ratings.\nManual trigger only. Sandbox defaults cost $0; real inputs use free daily calls, a card credit key or x402. No wallet signing, checkout or outreach. HTTP errors halt the workflow. Review inputs before running.\nNo crypto wallet? Buy $10 of HirePulse credit by card at https://gethirepulse.xyz/credits and paste the license key from the email into credit_key in Settings. Each billable result deducts its price; empty results are free.",
+        "height": 360,
         "width": 1100
       }
     },
@@ -43,6 +43,12 @@
             {
               "id": "f7636e39-70c0-5e37-be72-020295fe30fc",
               "name": "trial_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "c7e1d2a4-5b6f-4c3d-9e8a-1f2b3c4d5e6f",
+              "name": "credit_key",
               "value": "",
               "type": "string"
             },
@@ -130,6 +136,10 @@
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
+            },
+            {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
             },
@@ -189,6 +199,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
@@ -252,6 +266,10 @@
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
             },
             {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
+            },
+            {
               "name": "X-Agent-Context",
               "value": "n8n HirePulse recipe: HirePulse Stealth VC and Vendor X-Ray"
             },
@@ -311,6 +329,10 @@
             {
               "name": "X-Trial-Token",
               "value": "={{ $('Settings').first().json.trial_token || '' }}"
+            },
+            {
+              "name": "X-HirePulse-Credit-Key",
+              "value": "={{ $('Settings').first().json.credit_key || '' }}"
             },
             {
               "name": "X-Agent-Context",
